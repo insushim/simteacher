@@ -13,6 +13,13 @@ export const metadata: Metadata = {
   description: '초등학교 교사 심선생의 개인 블로그입니다. 코딩, 에듀테크, 교육 혁신에 대한 이야기를 나눕니다.',
   keywords: ['교사 블로그', '에듀테크', '코딩 교육', '초등 교사', 'AI 교육', '교육 혁신'],
   authors: [{ name: '심선생' }],
+  icons: {
+    icon: [
+      { url: '/favicon.svg', type: 'image/svg+xml' },
+      { url: '/icon.svg', type: 'image/svg+xml', sizes: '32x32' },
+    ],
+    apple: '/favicon.svg',
+  },
   openGraph: {
     type: 'website',
     locale: 'ko_KR',
