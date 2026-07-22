@@ -7,11 +7,12 @@ import './globals.css'
 export const metadata: Metadata = {
   metadataBase: new URL('https://madchumbub.web.app'),
   title: {
-    default: '선행 심선생 | 먼저 배워서 나누고, 선한 영향력을 전하다',
+    default: '선행 심선생 | 교실에서 14년, 코드로 만드는 새로운 교육',
     template: '%s | 선행 심선생',
   },
-  description: '초등학교 교사 심선생의 개인 블로그입니다. 코딩, 에듀테크, 교육 혁신에 대한 이야기를 나눕니다.',
-  keywords: ['교사 블로그', '에듀테크', '코딩 교육', '초등 교사', 'AI 교육', '교육 혁신'],
+  description:
+    '초등학교 교사이자 바이브코딩 개발자. 교실의 경험을 코드로 옮겨 학급 경제 SaaS 알찬을 만들고 운영합니다.',
+  keywords: ['초등 교사', '바이브코딩', '에듀테크', 'AI 교육', '알찬', '학급 경제'],
   authors: [{ name: '심선생' }],
   icons: {
     icon: [
@@ -25,15 +26,15 @@ export const metadata: Metadata = {
     locale: 'ko_KR',
     url: 'https://madchumbub.web.app',
     siteName: '선행 심선생',
-    title: '선행 심선생 | 먼저 배워서 나누고, 선한 영향력을 전하다',
-    description: '초등학교 교사의 코딩, 에듀테크, 교육 혁신 이야기',
+    title: '선행 심선생 | 교실에서 14년, 코드로 만드는 새로운 교육',
+    description: '초등학교 교사이자 바이브코딩 개발자의 기록',
   },
 }
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#ffffff' },
-    { media: '(prefers-color-scheme: dark)', color: '#0a0a0a' },
+    { media: '(prefers-color-scheme: light)', color: '#f8f7fc' },
+    { media: '(prefers-color-scheme: dark)', color: '#0a0a12' },
   ],
   width: 'device-width',
   initialScale: 1,
@@ -55,8 +56,7 @@ export default function RootLayout({
       <body className="antialiased min-h-screen flex flex-col">
         <ThemeProvider
           attribute="class"
-          defaultTheme="system"
-          enableSystem
+          defaultTheme="dark"
           disableTransitionOnChange={false}
         >
           <Header />

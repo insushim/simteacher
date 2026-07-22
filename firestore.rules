@@ -1,21 +1,19 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Notices - public read, admin write
-    match /notices/{noticeId} {
-      allow read: if true;
-      allow write: if request.auth != null;
-    }
-
-    // Contacts - anyone can create, only admin can read
+    // Contacts — 문의 폼: 누구나 생성 가능(필드·크기 검증), 열람은 Firebase 콘솔에서만
     match /contacts/{contactId} {
-      allow create: if true;
-      allow read, update, delete: if request.auth != null;
+      allow create: if request.resource.data.keys().hasOnly(['name', 'email', 'message', 'createdAt', 'status'])
+        && request.resource.data.name is string && request.resource.data.name.size() >= 1 && request.resource.data.name.size() <= 100
+        && request.resource.data.email is string && request.resource.data.email.size() >= 3 && request.resource.data.email.size() <= 200
+        && request.resource.data.message is string && request.resource.data.message.size() >= 1 && request.resource.data.message.size() <= 5000
+        && request.resource.data.status == 'pending';
+      allow read, update, delete: if false;
     }
 
-    // Users - own data only
-    match /users/{userId} {
-      allow read, write: if request.auth != null && request.auth.uid == userId;
+    // 그 외 전부 차단
+    match /{document=**} {
+      allow read, write: if false;
     }
   }
 }

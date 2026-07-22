@@ -10,7 +10,7 @@ export function Card({ children, className, hover = true }: CardProps) {
   return (
     <div
       className={cn(
-        'bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 overflow-hidden',
+        'bg-card text-card-fg rounded-2xl border border-line overflow-hidden',
         hover && 'transition-all duration-300 hover:shadow-xl hover:-translate-y-1',
         className
       )}
@@ -50,7 +50,7 @@ export function CardFooter({
   return (
     <div
       className={cn(
-        'px-6 py-4 bg-gray-50 dark:bg-gray-800/50 border-t border-gray-100 dark:border-gray-800',
+        'px-6 py-4 bg-muted/60 border-t border-line',
         className
       )}
     >

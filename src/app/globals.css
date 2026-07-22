@@ -1,71 +1,177 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ===== Primitives (Tailwind palette) — Aurora Dark 테마 ===== */
 @theme {
-  --color-primary-50: #f0fdfa;
-  --color-primary-100: #ccfbf1;
-  --color-primary-200: #99f6e4;
-  --color-primary-300: #5eead4;
-  --color-primary-400: #2dd4bf;
-  --color-primary-500: #14b8a6;
-  --color-primary-600: #0d9488;
-  --color-primary-700: #0f766e;
-  --color-primary-800: #115e59;
-  --color-primary-900: #134e4a;
+  /* primary = violet */
+  --color-primary-50: #f5f3ff;
+  --color-primary-100: #ede9fe;
+  --color-primary-200: #ddd6fe;
+  --color-primary-300: #c4b5fd;
+  --color-primary-400: #a78bfa;
+  --color-primary-500: #8b5cf6;
+  --color-primary-600: #7c3aed;
+  --color-primary-700: #6d28d9;
+  --color-primary-800: #5b21b6;
+  --color-primary-900: #4c1d95;
 
-  --color-secondary-50: #fff7ed;
-  --color-secondary-100: #ffedd5;
-  --color-secondary-200: #fed7aa;
-  --color-secondary-300: #fdba74;
-  --color-secondary-400: #fb923c;
-  --color-secondary-500: #f97316;
-  --color-secondary-600: #ea580c;
-  --color-secondary-700: #c2410c;
-  --color-secondary-800: #9a3412;
-  --color-secondary-900: #7c2d12;
+  /* secondary = cyan */
+  --color-secondary-50: #ecfeff;
+  --color-secondary-100: #cffafe;
+  --color-secondary-200: #a5f3fc;
+  --color-secondary-300: #67e8f9;
+  --color-secondary-400: #22d3ee;
+  --color-secondary-500: #06b6d4;
+  --color-secondary-600: #0891b2;
+  --color-secondary-700: #0e7490;
+  --color-secondary-800: #155e75;
+  --color-secondary-900: #164e63;
 
-  --color-accent-50: #faf5ff;
-  --color-accent-100: #f3e8ff;
-  --color-accent-200: #e9d5ff;
-  --color-accent-300: #d8b4fe;
-  --color-accent-400: #c084fc;
-  --color-accent-500: #a855f7;
-  --color-accent-600: #9333ea;
-  --color-accent-700: #7c3aed;
-  --color-accent-800: #6b21a8;
-  --color-accent-900: #581c87;
+  /* accent = fuchsia (한 화면 고채도 최대 2개 원칙 — 절제 사용) */
+  --color-accent-50: #fdf4ff;
+  --color-accent-100: #fae8ff;
+  --color-accent-200: #f5d0fe;
+  --color-accent-300: #f0abfc;
+  --color-accent-400: #e879f9;
+  --color-accent-500: #d946ef;
+  --color-accent-600: #c026d3;
+  --color-accent-700: #a21caf;
+  --color-accent-800: #86198f;
+  --color-accent-900: #701a75;
 }
 
+/* Semantic 색을 Tailwind 유틸(bg-surface, text-fg 등)로 노출 */
+@theme inline {
+  --color-surface: var(--background);
+  --color-fg: var(--foreground);
+  --color-card: var(--card);
+  --color-card-fg: var(--card-foreground);
+  --color-muted: var(--muted);
+  --color-muted-fg: var(--muted-foreground);
+  --color-line: var(--border);
+}
+
+/* ===== Semantics — 라이트 ===== */
 :root {
-  --background: #fafafa;
-  --foreground: #171717;
+  --background: #f8f7fc;
+  --foreground: #17171f;
+  --card: #ffffff;
+  --card-foreground: #17171f;
+  --muted: #efeef6;
+  --muted-foreground: #52525b;
+  --primary: #6d28d9;
+  --primary-foreground: #ffffff;
+  --secondary: #0e7490;
+  --secondary-foreground: #ffffff;
+  --accent: #ecebf5;
+  --accent-foreground: #3f3f50;
+  --destructive: #b91c1c;
+  --destructive-foreground: #ffffff;
+  --border: #e4e4ef;
+  --ring: #7c3aed;
 }
 
+/* ===== Semantics — 다크 (기본 테마) ===== */
 .dark {
-  --background: #0a0a0a;
-  --foreground: #fafafa;
+  --background: #0a0a12;
+  --foreground: #f2f2f8;
+  --card: #12121d;
+  --card-foreground: #f2f2f8;
+  --muted: #1a1a28;
+  --muted-foreground: #a3a3b8;
+  --primary: #a78bfa;
+  --primary-foreground: #0f0a1e;
+  --secondary: #22d3ee;
+  --secondary-foreground: #06202a;
+  --accent: #1e1b2e;
+  --accent-foreground: #c4b5fd;
+  --destructive: #f87171;
+  --destructive-foreground: #2a0a0a;
+  --border: #232333;
+  --ring: #a78bfa;
 }
 
 body {
   background-color: var(--background);
   color: var(--foreground);
   font-family: 'Pretendard', system-ui, sans-serif;
+  word-break: keep-all; /* 한국어 단어 단위 줄바꿈 */
 }
 
 html {
   scroll-behavior: smooth;
 }
 
+/* ===== 접근성 ===== */
+:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ===== Aurora Dark 시그니처 유틸 ===== */
 .gradient-text {
-  background: linear-gradient(to right, var(--color-primary-500), var(--color-secondary-500), var(--color-accent-500));
+  background: linear-gradient(90deg, var(--color-primary-400), var(--color-secondary-400));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-/* Code Highlighting */
+:root:not(.dark) .gradient-text {
+  background: linear-gradient(90deg, var(--color-primary-600), var(--color-secondary-600));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* 글래스 카드 — 다크/라이트 공용 */
+.glass {
+  background: color-mix(in srgb, var(--card) 55%, transparent);
+  border: 1px solid color-mix(in srgb, var(--foreground) 10%, transparent);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+/* 오로라 블롭 (블러 원) — 장식용 배경 */
+.aurora-blob {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(70px);
+  pointer-events: none;
+}
+.aurora-violet {
+  background: radial-gradient(circle, color-mix(in srgb, var(--color-primary-500) 40%, transparent), transparent 65%);
+}
+.aurora-cyan {
+  background: radial-gradient(circle, color-mix(in srgb, var(--color-secondary-500) 30%, transparent), transparent 65%);
+}
+
+/* 그라데이션 버튼 (primary CTA) */
+.btn-aurora {
+  background: linear-gradient(90deg, var(--color-primary-600), var(--color-secondary-700));
+  color: #ffffff;
+  box-shadow: 0 6px 24px color-mix(in srgb, var(--color-primary-500) 40%, transparent);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+.btn-aurora:hover {
+  box-shadow: 0 8px 32px color-mix(in srgb, var(--color-primary-500) 55%, transparent);
+}
+
+/* ===== Code Highlighting ===== */
 pre {
-  background-color: #1f2937;
-  color: #f3f4f6;
+  background-color: #12121d; /* design-gate: ignore */
+  color: #f2f2f8; /* design-gate: ignore */
   border-radius: 0.75rem;
   padding: 1rem;
   overflow-x: auto;
@@ -77,44 +183,27 @@ code {
 }
 
 :not(pre) > code {
-  background-color: #f3f4f6;
+  background-color: var(--muted);
   padding: 0.125rem 0.375rem;
   border-radius: 0.25rem;
-  color: var(--color-primary-600);
+  color: var(--primary);
 }
 
-.dark :not(pre) > code {
-  background-color: #374151;
-  color: var(--color-primary-400);
-}
-
-/* Scrollbar */
+/* ===== Scrollbar ===== */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background-color: #f3f4f6;
-}
-
-.dark ::-webkit-scrollbar-track {
-  background-color: #111827;
+  background-color: var(--muted);
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: #d1d5db;
+  background-color: var(--border);
   border-radius: 9999px;
 }
 
-.dark ::-webkit-scrollbar-thumb {
-  background-color: #4b5563;
-}
-
 ::-webkit-scrollbar-thumb:hover {
-  background-color: #9ca3af;
-}
-
-.dark ::-webkit-scrollbar-thumb:hover {
-  background-color: #6b7280;
+  background-color: var(--muted-foreground);
 }

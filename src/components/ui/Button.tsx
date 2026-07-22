@@ -26,17 +26,15 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     ref
   ) => {
     const baseStyles =
-      'inline-flex items-center justify-center font-medium rounded-xl transition-all duration-200 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed'
+      'inline-flex items-center justify-center font-semibold rounded-2xl transition-all duration-200 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed'
 
     const variants = {
-      primary:
-        'bg-primary-500 hover:bg-primary-600 text-white shadow-lg shadow-primary-500/25 hover:shadow-xl hover:shadow-primary-500/30',
+      primary: 'btn-aurora',
       secondary:
-        'bg-secondary-500 hover:bg-secondary-600 text-white shadow-lg shadow-secondary-500/25 hover:shadow-xl hover:shadow-secondary-500/30',
+        'bg-secondary-700 hover:bg-secondary-800 text-white shadow-lg shadow-secondary-500/25 hover:shadow-xl hover:shadow-secondary-500/30',
       outline:
-        'bg-transparent border-2 border-primary-500 text-primary-500 hover:bg-primary-500 hover:text-white',
-      ghost:
-        'bg-transparent text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800',
+        'glass text-fg hover:border-primary-500/60 hover:text-primary-600 dark:hover:text-primary-300',
+      ghost: 'bg-transparent text-muted-fg hover:text-fg hover:bg-muted',
     }
 
     const sizes = {

@@ -1,125 +1,98 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { useInView } from 'framer-motion'
-import { useRef } from 'react'
-import Link from 'next/link'
-import { ExternalLink, Github } from 'lucide-react'
-import { Card } from '@/components/ui/Card'
-import { Badge } from '@/components/ui/Badge'
+import {
+  ArrowRight,
+  Landmark,
+  TrendingUp,
+  Home,
+  Scale,
+  ShoppingBag,
+  Keyboard,
+} from 'lucide-react'
 import { Button } from '@/components/ui/Button'
+import { Badge } from '@/components/ui/Badge'
 
-const projects = [
-  {
-    slug: 'ssak-writing-ai',
-    title: '싹글쓰기 AI',
-    description: 'AI 기반 초등학생 글쓰기 도우미. 학생들의 창의적 글쓰기를 지원합니다.',
-    tech: ['Next.js', 'OpenAI', 'Firebase'],
-    category: 'AI',
-  },
-  {
-    slug: 'math-tower-defense',
-    title: '수학 타워 디펜스',
-    description: '수학 문제를 풀어 적을 물리치는 교육용 타워 디펜스 게임',
-    tech: ['Phaser.js', 'TypeScript', 'React'],
-    category: '게임',
-  },
-  {
-    slug: 'history-adventure-game',
-    title: '역사 어드벤처',
-    description: '한국사를 배우는 인터랙티브 어드벤처 게임',
-    tech: ['React', 'Zustand', 'Tailwind'],
-    category: '게임',
-  },
+const features = [
+  { icon: Landmark, label: '월급 · 세금 · 국고' },
+  { icon: TrendingUp, label: '주식 · 예적금' },
+  { icon: Home, label: '부동산 거래' },
+  { icon: Scale, label: '학급 재판' },
+  { icon: ShoppingBag, label: '아바타 상점' },
+  { icon: Keyboard, label: '타자 게임 · 랭킹' },
 ]
 
 export function FeaturedProjects() {
-  const ref = useRef(null)
-  const isInView = useInView(ref, { once: true, margin: '-100px' })
-
   return (
-    <section ref={ref} className="py-24 bg-gray-50 dark:bg-gray-800/50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
+    <section className="relative py-24 overflow-hidden">
+      {/* Aurora accent */}
+      <div className="absolute inset-0 overflow-hidden" aria-hidden>
+        <div className="aurora-blob aurora-cyan w-[420px] h-[420px] top-1/3 -left-40 opacity-70" />
+      </div>
+
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.5 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-80px' }}
           className="text-center mb-16"
         >
-          <span className="text-primary-500 font-medium">Portfolio</span>
-          <h2 className="mt-4 text-3xl md:text-4xl font-bold text-gray-900 dark:text-white">
-            주요 프로젝트
+          <span className="text-primary-600 dark:text-primary-300 font-semibold">
+            Portfolio
+          </span>
+          <h2 className="mt-3 text-3xl md:text-4xl font-extrabold text-fg tracking-tight">
+            대표 프로젝트 — <span className="gradient-text">알찬</span>
           </h2>
-          <p className="mt-4 text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-            교육 현장에서 활용할 수 있는 다양한 프로젝트를 개발하고 있습니다.
+          <p className="mt-4 text-lg text-muted-fg max-w-2xl mx-auto">
+            교실 속 살아있는 경제 교육 플랫폼. 실제 학급에서 운영 중입니다.
           </p>
         </motion.div>
 
-        {/* Projects Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {projects.map((project, index) => (
-            <motion.div
-              key={project.slug}
-              initial={{ opacity: 0, y: 20 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-            >
-              <Card className="h-full flex flex-col">
-                {/* Thumbnail Placeholder */}
-                <div className="h-48 bg-gradient-to-br from-primary-400 to-secondary-500 flex items-center justify-center">
-                  <span className="text-6xl">
-                    {project.category === 'AI' ? '🤖' : '🎮'}
-                  </span>
-                </div>
-
-                <div className="p-6 flex-1 flex flex-col">
-                  <Badge variant="outline" className="w-fit mb-3">
-                    {project.category}
-                  </Badge>
-                  <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
-                    {project.title}
-                  </h3>
-                  <p className="text-gray-600 dark:text-gray-400 mb-4 flex-1">
-                    {project.description}
-                  </p>
-
-                  {/* Tech Stack */}
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    {project.tech.map((tech) => (
-                      <span
-                        key={tech}
-                        className="px-2 py-1 text-xs bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 rounded"
-                      >
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-
-                  {/* Links */}
-                  <Link
-                    href={`/portfolio/${project.slug}`}
-                    className="text-primary-500 hover:text-primary-600 font-medium inline-flex items-center"
-                  >
-                    자세히 보기
-                    <ExternalLink className="ml-1 w-4 h-4" />
-                  </Link>
-                </div>
-              </Card>
-            </motion.div>
-          ))}
-        </div>
-
-        {/* CTA */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.5, delay: 0.4 }}
-          className="text-center mt-12"
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-60px' }}
+          className="glass rounded-3xl p-8 md:p-12"
         >
-          <Button href="/portfolio" variant="outline">
-            모든 프로젝트 보기
-          </Button>
+          <div className="grid lg:grid-cols-2 gap-10 items-center">
+            <div>
+              <div className="flex flex-wrap gap-2 mb-6">
+                <Badge variant="primary" size="md">React</Badge>
+                <Badge variant="secondary" size="md">Firebase</Badge>
+                <Badge variant="outline" size="md">운영 중</Badge>
+              </div>
+              <h3 className="text-2xl md:text-3xl font-bold text-fg mb-4">
+                학급 경제 시뮬레이션 SaaS
+              </h3>
+              <p className="text-muted-fg leading-relaxed mb-6">
+                아이들이 월급을 받고, 세금을 내고, 주식과 부동산에 투자하고,
+                재판까지 경험하는 학급 경제 세계. 교실 운영 14년의 경험과
+                바이브코딩이 만나 태어난 첫 번째 프로젝트입니다.
+              </p>
+              <Button href="/portfolio">
+                자세히 보기
+                <ArrowRight className="ml-2 w-4 h-4" />
+              </Button>
+            </div>
+
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+              {features.map((f, i) => (
+                <motion.div
+                  key={f.label}
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.05 }}
+                  className="rounded-2xl border border-line bg-card p-4 text-center"
+                >
+                  <f.icon className="w-6 h-6 mx-auto mb-2 text-secondary-600 dark:text-secondary-400" />
+                  <div className="text-sm font-semibold text-fg leading-snug">
+                    {f.label}
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
         </motion.div>
       </div>
     </section>

@@ -1,26 +1,28 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { ArrowRight, BookOpen, Code, Lightbulb } from 'lucide-react'
+import { ArrowRight, Sparkles } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
 
 export function HeroSection() {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
-      {/* Background Gradient */}
-      <div className="absolute inset-0 bg-gradient-to-br from-primary-50 via-white to-secondary-50 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800" />
-
-      {/* Floating Elements */}
-      <div className="absolute inset-0 overflow-hidden">
+      {/* Aurora Background */}
+      <div className="absolute inset-0 overflow-hidden" aria-hidden>
         <motion.div
-          animate={{ y: [0, -20, 0] }}
-          transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
-          className="absolute top-1/4 left-1/4 w-64 h-64 bg-primary-200/30 dark:bg-primary-500/10 rounded-full blur-3xl"
+          animate={{ y: [0, -30, 0], x: [0, 20, 0] }}
+          transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
+          className="aurora-blob aurora-violet w-[480px] h-[480px] -top-24 left-[8%]"
+        />
+        <motion.div
+          animate={{ y: [0, 30, 0], x: [0, -20, 0] }}
+          transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut' }}
+          className="aurora-blob aurora-cyan w-[520px] h-[520px] -bottom-32 right-[5%]"
         />
         <motion.div
           animate={{ y: [0, 20, 0] }}
-          transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
-          className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-secondary-200/30 dark:bg-secondary-500/10 rounded-full blur-3xl"
+          transition={{ duration: 14, repeat: Infinity, ease: 'easeInOut' }}
+          className="aurora-blob aurora-violet w-[320px] h-[320px] top-[40%] right-[30%] opacity-60"
         />
       </div>
 
@@ -32,9 +34,9 @@ export function HeroSection() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <span className="inline-flex items-center px-4 py-2 rounded-full bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-400 text-sm font-medium">
-              <Lightbulb className="w-4 h-4 mr-2" />
-              초등 교사의 에듀테크 여정
+            <span className="inline-flex items-center px-4 py-2 rounded-full border border-primary-500/40 bg-primary-500/10 text-primary-700 dark:text-primary-300 text-sm font-semibold">
+              <Sparkles className="w-4 h-4 mr-2" />
+              초등교사 14년 × 바이브코딩 1년차
             </span>
           </motion.div>
 
@@ -43,11 +45,11 @@ export function HeroSection() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            className="mt-8 text-4xl md:text-6xl lg:text-7xl font-bold text-gray-900 dark:text-white"
+            className="mt-8 text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-tight text-fg"
           >
-            먼저 배워서 나누고,
+            교실에서 14년,
             <br />
-            <span className="gradient-text">선한 영향력</span>을 전하다
+            <span className="gradient-text">코드로 만드는 새로운 교육</span>
           </motion.h1>
 
           {/* Subtitle */}
@@ -55,11 +57,11 @@ export function HeroSection() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="mt-6 text-lg md:text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto"
+            className="mt-6 text-lg md:text-xl text-muted-fg max-w-2xl mx-auto leading-relaxed"
           >
-            코딩, AI, 에듀테크를 교실에 녹여내는 초등 교사입니다.
+            현직 초등교사가 AI와 함께 학급 경제 SaaS를 만들었습니다.
             <br />
-            함께 배우고 성장하는 교육 이야기를 나눕니다.
+            먼저 배워서 나누고, 선한 영향력을 전합니다.
           </motion.p>
 
           {/* CTA Buttons */}
@@ -69,50 +71,37 @@ export function HeroSection() {
             transition={{ duration: 0.5, delay: 0.3 }}
             className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4"
           >
-            <Button href="/blog" size="lg">
-              블로그 읽기
+            <Button href="/portfolio" size="lg">
+              알찬 프로젝트 보기
               <ArrowRight className="ml-2 w-5 h-5" />
             </Button>
-            <Button href="/portfolio" variant="outline" size="lg">
-              프로젝트 보기
+            <Button href="/contact" variant="outline" size="lg">
+              문의하기
             </Button>
           </motion.div>
 
-          {/* Stats */}
+          {/* Stats — 사실만 */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.4 }}
-            className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-8"
+            className="mt-20 grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-3xl mx-auto"
           >
-            <div className="text-center">
-              <div className="flex items-center justify-center w-12 h-12 mx-auto mb-4 rounded-xl bg-primary-100 dark:bg-primary-900/30 text-primary-600 dark:text-primary-400">
-                <BookOpen className="w-6 h-6" />
+            {[
+              { value: '14년', label: '교직 경력', sub: '2013년 9월부터' },
+              { value: '1년차', label: '바이브코딩', sub: '2025년부터' },
+              { value: '알찬', label: '학급 경제 SaaS', sub: '실제 학급 운영 중' },
+            ].map((stat) => (
+              <div key={stat.label} className="glass rounded-2xl p-6">
+                <div className="text-3xl font-extrabold gradient-text">
+                  {stat.value}
+                </div>
+                <div className="mt-1 text-[15px] font-semibold text-fg">
+                  {stat.label}
+                </div>
+                <div className="text-sm text-muted-fg">{stat.sub}</div>
               </div>
-              <div className="text-3xl font-bold text-gray-900 dark:text-white">10+</div>
-              <div className="text-sm text-gray-500 dark:text-gray-400">블로그 글</div>
-            </div>
-            <div className="text-center">
-              <div className="flex items-center justify-center w-12 h-12 mx-auto mb-4 rounded-xl bg-secondary-100 dark:bg-secondary-900/30 text-secondary-600 dark:text-secondary-400">
-                <Code className="w-6 h-6" />
-              </div>
-              <div className="text-3xl font-bold text-gray-900 dark:text-white">5+</div>
-              <div className="text-sm text-gray-500 dark:text-gray-400">프로젝트</div>
-            </div>
-            <div className="text-center">
-              <div className="flex items-center justify-center w-12 h-12 mx-auto mb-4 rounded-xl bg-accent-100 dark:bg-accent-900/30 text-accent-600 dark:text-accent-400">
-                <Lightbulb className="w-6 h-6" />
-              </div>
-              <div className="text-3xl font-bold text-gray-900 dark:text-white">15+</div>
-              <div className="text-sm text-gray-500 dark:text-gray-400">교육 경력(년)</div>
-            </div>
-            <div className="text-center">
-              <div className="flex items-center justify-center w-12 h-12 mx-auto mb-4 rounded-xl bg-primary-100 dark:bg-primary-900/30 text-primary-600 dark:text-primary-400">
-                <BookOpen className="w-6 h-6" />
-              </div>
-              <div className="text-3xl font-bold text-gray-900 dark:text-white">50+</div>
-              <div className="text-sm text-gray-500 dark:text-gray-400">강의 횟수</div>
-            </div>
+            ))}
           </motion.div>
         </div>
       </div>
