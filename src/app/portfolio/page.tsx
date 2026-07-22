@@ -14,10 +14,10 @@ import {
   Gift,
 } from 'lucide-react'
 import Image from 'next/image'
-import { ExternalLink, Lock } from 'lucide-react'
+import { ExternalLink, Lock, Download } from 'lucide-react'
 import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
-import { learningSites } from '@/data/projects'
+import { learningSites, teacherTools } from '@/data/projects'
 
 const features = [
   {
@@ -92,8 +92,9 @@ export default function PortfolioPage() {
             교실에서 시작해 <span className="gradient-text">직접 만든 것들</span>
           </h1>
           <p className="mt-6 text-lg text-muted-fg max-w-2xl mx-auto leading-relaxed">
-            학급 경제 플랫폼 <strong className="text-fg font-semibold">알찬</strong>과, 그 안에서
-            아이들이 매일 쓰는 학습 사이트 6개. 모두 바이브코딩으로 만들어 실제 수업에 씁니다.
+            학급 경제 플랫폼 <strong className="text-fg font-semibold">알찬</strong>, 아이들이 매일 쓰는
+            학습 사이트 6개, 그리고 선생님을 위한 프로그램 2개.
+            모두 바이브코딩으로 만들어 실제 교실에서 씁니다.
           </p>
         </motion.div>
 
@@ -169,6 +170,102 @@ export default function PortfolioPage() {
                 <h3 className="text-lg font-bold text-fg mb-2">{f.title}</h3>
                 <p className="text-muted-fg text-[15px] leading-relaxed">{f.description}</p>
               </motion.div>
+            ))}
+          </div>
+        </motion.div>
+
+        {/* 선생님을 위한 프로그램 */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-80px' }}
+          className="mt-28"
+        >
+          <div className="text-center mb-12">
+            <span className="text-primary-600 dark:text-primary-300 font-semibold">
+              For Teachers
+            </span>
+            <h2 className="mt-3 text-3xl md:text-4xl font-extrabold tracking-tight text-fg">
+              <span className="gradient-text">선생님</span>을 위한 프로그램
+            </h2>
+            <p className="mt-4 text-lg text-muted-fg max-w-2xl mx-auto leading-relaxed">
+              아이들 것만 만들다 보니, 정작 교사인 제가 쓸 게 없더군요.
+              제 책상에서 쓰려고 만들어 무료로 나눕니다.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-8">
+            {teacherTools.map((tool, i) => (
+              <motion.article
+                key={tool.slug}
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-60px' }}
+                transition={{ delay: i * 0.08 }}
+                className="glass rounded-3xl overflow-hidden flex flex-col"
+              >
+                <div className="relative aspect-[8/5] bg-muted overflow-hidden border-b border-line">
+                  <Image
+                    src={tool.image}
+                    alt={`${tool.name} 화면`}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    className="object-cover object-top"
+                  />
+                </div>
+
+                <div className="p-7 flex flex-col flex-1">
+                  <div className="flex items-center gap-2 mb-3">
+                    <Badge variant="secondary">{tool.platform}</Badge>
+                    <Badge variant="outline">무료</Badge>
+                  </div>
+
+                  <h3 className="text-xl font-bold text-fg">{tool.name}</h3>
+                  <p className="mt-1 text-secondary-700 dark:text-secondary-300 font-medium text-[15px]">
+                    {tool.tagline}
+                  </p>
+                  <p className="mt-3 text-muted-fg text-[15px] leading-relaxed">
+                    {tool.description}
+                  </p>
+
+                  <ul className="mt-5 space-y-2">
+                    {tool.features.map((f) => (
+                      <li key={f} className="flex items-start text-[15px] text-fg/85">
+                        <span
+                          className="mt-2 mr-3 w-1.5 h-1.5 rounded-full bg-primary-500 shrink-0"
+                          aria-hidden="true"
+                        />
+                        {f}
+                      </li>
+                    ))}
+                  </ul>
+
+                  <div className="mt-auto pt-6 flex items-center justify-between gap-4 flex-wrap">
+                    <div className="flex flex-wrap gap-1.5">
+                      {tool.tech.map((t) => (
+                        <span
+                          key={t}
+                          className="px-2.5 py-1 text-xs font-medium bg-muted text-muted-fg rounded-lg"
+                        >
+                          {t}
+                        </span>
+                      ))}
+                    </div>
+
+                    {tool.url && (
+                      <a
+                        href={tool.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center text-sm font-semibold text-primary-600 dark:text-primary-300 hover:underline"
+                      >
+                        <Download className="mr-1.5 w-4 h-4" />
+                        {tool.urlLabel}
+                      </a>
+                    )}
+                  </div>
+                </div>
+              </motion.article>
             ))}
           </div>
         </motion.div>

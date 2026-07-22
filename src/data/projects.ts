@@ -15,6 +15,60 @@ export interface LearningSite {
   url?: string;
 }
 
+export interface TeacherTool {
+  slug: string;
+  name: string;
+  platform: string;
+  tagline: string;
+  description: string;
+  features: string[];
+  tech: string[];
+  image: string;
+  /** 다운로드/실행 링크 */
+  url?: string;
+  urlLabel?: string;
+}
+
+// 선생님을 위한 프로그램
+export const teacherTools: TeacherTool[] = [
+  {
+    slug: 'schooldesk',
+    name: '스쿨데스크 SchoolDesk',
+    platform: 'Windows 데스크톱',
+    tagline: '선생님의 책상 위, 가장 똑똑한 도우미',
+    description:
+      '시간표·할일·D-Day·급식·학급 체크를 바탕화면 위젯으로 띄워 두는 교사용 프로그램입니다. 위젯은 바탕화면에 고정돼 클릭이 통과하니, 일하다 고개만 들면 오늘 할 일이 보입니다.',
+    features: [
+      '위젯 20종 — 시간표·할일·D-Day·급식·습관 등',
+      '학사일정 파일(HWP·엑셀·워드) 자동 불러오기',
+      '학생 기록은 암호화 + 변조 탐지 잠금',
+      '데이터는 내 컴퓨터에 저장 · 광고 없음 · 무료',
+    ],
+    tech: ['Electron', 'React', 'SQLite'],
+    image: '/images/portfolio/schooldesk.webp',
+    url: 'https://github.com/iwschooldesk-app/SchoolDesk/releases/latest/download/SchoolDesk-Setup.zip',
+    urlLabel: 'Windows용 내려받기',
+  },
+  {
+    slug: 'ddobak',
+    name: '또박또박',
+    platform: '안드로이드 · 웹',
+    tagline: '또박또박 적는 나의 기록',
+    description:
+      '할일·메모·일정·습관·목표·루틴을 한 곳에 적는 기록 앱입니다. 스쿨데스크와 계정을 연결하면 교실 컴퓨터에 적어둔 할일을 퇴근길 휴대폰에서 이어서 볼 수 있습니다.',
+    features: [
+      '할일 · 메모 · 일정 · 습관 · 목표 · 루틴',
+      '스쿨데스크와 계정 연동 (선택)',
+      '할일·메모·일정은 종단간 암호화',
+      '학생 기록은 동기화하지 않음',
+    ],
+    tech: ['React Native', 'Next.js', 'Cloudflare D1'],
+    image: '/images/portfolio/ddobak.webp',
+    url: 'https://ddobak.simssijjang-d79.workers.dev',
+    urlLabel: '안드로이드 앱 내려받기',
+  },
+];
+
 export const learningSites: LearningSite[] = [
   {
     slug: 'arton',
