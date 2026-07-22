@@ -4,7 +4,7 @@ export const siteConfig: SiteConfig = {
   name: '선행 심선생',
   description:
     '교실에서 14년, 코드로 만드는 새로운 교육 — 초등학교 교사이자 바이브코딩 개발자',
-  url: 'https://madchumbub.web.app',
+  url: 'https://sunhaengssam.web.app',
   ogImage: '/images/og/og-default.png',
   links: {
     github: 'https://github.com/iw-lab',

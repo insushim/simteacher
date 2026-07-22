@@ -1,5 +1,13 @@
 {
   "projects": {
     "default": "madchumbub"
+  },
+  "targets": {
+    "madchumbub": {
+      "hosting": {
+        "main": ["sunhaengssam"],
+        "old": ["madchumbub"]
+      }
+    }
   }
 }

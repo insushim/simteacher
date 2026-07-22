@@ -5,7 +5,7 @@ import { Footer } from '@/components/layout/Footer'
 import './globals.css'
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://madchumbub.web.app'),
+  metadataBase: new URL('https://sunhaengssam.web.app'),
   title: {
     default: '선행 심선생 | 교실에서 14년, 코드로 만드는 새로운 교육',
     template: '%s | 선행 심선생',
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'ko_KR',
-    url: 'https://madchumbub.web.app',
+    url: 'https://sunhaengssam.web.app',
     siteName: '선행 심선생',
     title: '선행 심선생 | 교실에서 14년, 코드로 만드는 새로운 교육',
     description: '초등학교 교사이자 바이브코딩 개발자의 기록',
