@@ -13,8 +13,11 @@ import {
   Music,
   Gift,
 } from 'lucide-react'
+import Image from 'next/image'
+import { ExternalLink, Lock } from 'lucide-react'
 import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
+import { learningSites } from '@/data/projects'
 
 const features = [
   {
@@ -86,8 +89,24 @@ export default function PortfolioPage() {
         >
           <span className="text-primary-600 dark:text-primary-300 font-semibold">Portfolio</span>
           <h1 className="mt-4 text-4xl md:text-5xl font-extrabold tracking-tight text-fg">
-            <span className="gradient-text">알찬</span> — 학급 경제 시뮬레이션
+            교실에서 시작해 <span className="gradient-text">직접 만든 것들</span>
           </h1>
+          <p className="mt-6 text-lg text-muted-fg max-w-2xl mx-auto leading-relaxed">
+            학급 경제 플랫폼 <strong className="text-fg font-semibold">알찬</strong>과, 그 안에서
+            아이들이 매일 쓰는 학습 사이트 6개. 모두 바이브코딩으로 만들어 실제 수업에 씁니다.
+          </p>
+        </motion.div>
+
+        {/* 알찬 */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.05 }}
+          className="text-center mb-12"
+        >
+          <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight text-fg">
+            <span className="gradient-text">알찬</span> — 학급 경제 시뮬레이션
+          </h2>
           <p className="mt-6 text-lg text-muted-fg max-w-2xl mx-auto leading-relaxed">
             아이들이 돈을 벌고, 쓰고, 투자하고, 세금을 내는 교실 속 경제 세계.
             교실 운영 14년의 경험을 바이브코딩으로 직접 구현해, 실제 학급에서
@@ -154,12 +173,117 @@ export default function PortfolioPage() {
           </div>
         </motion.div>
 
+        {/* 학습 사이트 */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-80px' }}
+          className="mt-28"
+        >
+          <div className="text-center mb-12">
+            <span className="text-primary-600 dark:text-primary-300 font-semibold">
+              Learning Sites
+            </span>
+            <h2 className="mt-3 text-3xl md:text-4xl font-extrabold tracking-tight text-fg">
+              알찬 속 <span className="gradient-text">학습 사이트</span>
+            </h2>
+            <p className="mt-4 text-lg text-muted-fg max-w-2xl mx-auto leading-relaxed">
+              수학·영어·미술·논리까지, 교실에서 필요할 때마다 하나씩 만들었습니다.
+              아이들이 알찬 메뉴에서 바로 들어가 씁니다.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-8">
+            {learningSites.map((site, i) => (
+              <motion.article
+                key={site.slug}
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-60px' }}
+                transition={{ delay: (i % 2) * 0.08 }}
+                className="glass rounded-3xl overflow-hidden flex flex-col"
+              >
+                {/* 스크린샷 */}
+                <div className="relative aspect-[8/5] bg-muted overflow-hidden border-b border-line">
+                  <Image
+                    src={site.image}
+                    alt={`${site.name} 화면`}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    className="object-cover object-top"
+                  />
+                </div>
+
+                <div className="p-7 flex flex-col flex-1">
+                  <div className="flex items-center gap-2 mb-3">
+                    <Badge variant="primary">{site.subject}</Badge>
+                    <Badge variant="outline">{site.target}</Badge>
+                  </div>
+
+                  <h3 className="text-xl font-bold text-fg">{site.name}</h3>
+                  <p className="mt-1 text-secondary-700 dark:text-secondary-300 font-medium text-[15px]">
+                    {site.tagline}
+                  </p>
+                  <p className="mt-3 text-muted-fg text-[15px] leading-relaxed">
+                    {site.description}
+                  </p>
+
+                  <ul className="mt-5 space-y-2">
+                    {site.features.map((f) => (
+                      <li
+                        key={f}
+                        className="flex items-start text-[15px] text-fg/85"
+                      >
+                        <span
+                          className="mt-2 mr-3 w-1.5 h-1.5 rounded-full bg-primary-500 shrink-0"
+                          aria-hidden="true"
+                        />
+                        {f}
+                      </li>
+                    ))}
+                  </ul>
+
+                  <div className="mt-auto pt-6 flex items-center justify-between gap-4 flex-wrap">
+                    <div className="flex flex-wrap gap-1.5">
+                      {site.tech.map((t) => (
+                        <span
+                          key={t}
+                          className="px-2.5 py-1 text-xs font-medium bg-muted text-muted-fg rounded-lg"
+                        >
+                          {t}
+                        </span>
+                      ))}
+                    </div>
+
+                    {site.url ? (
+                      <a
+                        href={site.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center text-sm font-semibold text-primary-600 dark:text-primary-300 hover:underline"
+                      >
+                        사이트 열기
+                        <ExternalLink className="ml-1.5 w-4 h-4" />
+                      </a>
+                    ) : (
+                      <span className="inline-flex items-center text-sm text-muted-fg">
+                        <Lock className="mr-1.5 w-3.5 h-3.5" />
+                        학급 운영 중
+                      </span>
+                    )}
+                  </div>
+                </div>
+              </motion.article>
+            ))}
+          </div>
+        </motion.div>
+
         {/* CTA */}
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          className="mt-16 text-center"
+          className="mt-20 text-center"
         >
           <p className="text-muted-fg mb-6">
             알찬이나 바이브코딩이 궁금하신가요?
