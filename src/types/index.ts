@@ -12,9 +12,11 @@ export interface BlogPost {
 
 // Contact Form Types
 export interface ContactForm {
-  name: string;
-  email: string;
-  message: string;
+  name: string;    // 선택 — 비우면 '' 로 저장
+  email: string;   // 선택 — 답장 원할 때만
+  school: string;  // 선택
+  title: string;   // 필수
+  message: string; // 필수
 }
 
 // Navigation Types

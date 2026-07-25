@@ -1,25 +1,62 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
-import { Mail, Send, CheckCircle, MessageCircle } from 'lucide-react'
+import { Mail, Send, CheckCircle, MessageCircle, Lock, Inbox } from 'lucide-react'
 import { Input } from '@/components/ui/Input'
 import { Textarea } from '@/components/ui/Textarea'
 import { Button } from '@/components/ui/Button'
 import { siteConfig } from '@/data/siteConfig'
 import { submitContactForm } from '@/lib/firestore'
 
+// 이 기기에서 보낸 문의 기록 (로컬 전용 — 서버로 안 나가고, 다른 사람에겐 안 보임)
+const HISTORY_KEY = 'simteacher:inquiries'
+type SentItem = { title: string; at: number }
+
+function loadHistory(): SentItem[] {
+  if (typeof window === 'undefined') return []
+  try {
+    const raw = window.localStorage.getItem(HISTORY_KEY)
+    return raw ? (JSON.parse(raw) as SentItem[]) : []
+  } catch {
+    return []
+  }
+}
+
+function pushHistory(title: string) {
+  if (typeof window === 'undefined') return
+  try {
+    const next = [{ title, at: Date.now() }, ...loadHistory()].slice(0, 20)
+    window.localStorage.setItem(HISTORY_KEY, JSON.stringify(next))
+  } catch {
+    /* 저장 실패는 조용히 무시 — 문의 자체엔 영향 없음 */
+  }
+}
+
+function formatDate(ts: number): string {
+  const d = new Date(ts)
+  return `${d.getMonth() + 1}월 ${d.getDate()}일`
+}
+
 export default function ContactPage() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
+  const [submittedWithEmail, setSubmittedWithEmail] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [history, setHistory] = useState<SentItem[]>([])
   const [formData, setFormData] = useState({
     name: '',
     email: '',
+    school: '',
+    title: '',
     message: '',
   })
 
   const [honeypot, setHoneypot] = useState('')
+
+  useEffect(() => {
+    setHistory(loadHistory())
+  }, [])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -31,10 +68,20 @@ export default function ContactPage() {
     setIsSubmitting(true)
     setError(null)
 
-    const id = await submitContactForm(formData)
+    const hadEmail = formData.email.trim().length > 0
+    const id = await submitContactForm({
+      name: formData.name.trim(),
+      email: formData.email.trim(),
+      school: formData.school.trim(),
+      title: formData.title.trim(),
+      message: formData.message.trim(),
+    })
 
     setIsSubmitting(false)
     if (id) {
+      pushHistory(formData.title.trim() || '문의')
+      setSubmittedWithEmail(hadEmail)
+      setHistory(loadHistory())
       setIsSubmitted(true)
     } else {
       setError('전송에 실패했어요. 잠시 후 다시 시도하거나 이메일로 보내주세요.')
@@ -52,20 +99,22 @@ export default function ContactPage() {
 
   if (isSubmitted) {
     return (
-      <div className="min-h-screen pt-24 pb-16 flex items-center justify-center">
+      <div className="min-h-screen pt-24 pb-16 flex items-center justify-center px-4">
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="text-center"
+          className="text-center max-w-md"
         >
           <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-primary-500/15 flex items-center justify-center">
             <CheckCircle className="w-10 h-10 text-primary-500 dark:text-primary-300" />
           </div>
           <h1 className="text-2xl font-bold text-fg mb-4">
-            메시지가 잘 도착했어요!
+            문의가 잘 도착했어요!
           </h1>
-          <p className="text-muted-fg mb-8">
-            읽어보고 이메일로 답장 드릴게요. 감사합니다.
+          <p className="text-muted-fg mb-8 leading-relaxed">
+            {submittedWithEmail
+              ? '읽어보고 남겨주신 이메일로 답장 드릴게요. 감사합니다.'
+              : '심쌤만 볼 수 있는 문의함에 담겼어요. 답장을 받고 싶으시면 이메일을 남겨서 한 번 더 보내주셔도 좋아요.'}
           </p>
           <Button href="/">홈으로 돌아가기</Button>
         </motion.div>
@@ -85,11 +134,11 @@ export default function ContactPage() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-12"
+          className="text-center mb-10"
         >
           <span className="text-primary-600 dark:text-primary-300 font-semibold">Contact</span>
           <h1 className="mt-4 text-4xl md:text-5xl font-extrabold tracking-tight text-fg">
-            편하게 <span className="gradient-text">이야기</span> 남겨주세요
+            편하게 <span className="gradient-text">문의</span> 남겨주세요
           </h1>
           <p className="mt-6 text-lg text-muted-fg max-w-xl mx-auto leading-relaxed">
             에듀테크, 바이브코딩, 학급 운영 이야기 — 무엇이든 좋습니다.
@@ -97,24 +146,22 @@ export default function ContactPage() {
           </p>
         </motion.div>
 
-        {/* Email card */}
+        {/* 비공개 안심 배너 */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          className="glass rounded-2xl p-6 mb-8 flex items-center justify-center gap-4"
+          transition={{ delay: 0.05 }}
+          className="glass rounded-2xl p-5 mb-8 flex items-start gap-4 border border-primary-500/20"
         >
-          <div className="w-12 h-12 rounded-xl bg-primary-500/15 flex items-center justify-center text-primary-600 dark:text-primary-300">
-            <Mail className="w-6 h-6" />
+          <div className="w-11 h-11 shrink-0 rounded-xl bg-primary-500/15 flex items-center justify-center text-primary-600 dark:text-primary-300">
+            <Lock className="w-5 h-5" />
           </div>
-          <div>
-            <div className="text-sm text-muted-fg">이메일로 직접 보내셔도 돼요</div>
-            <a
-              href={`mailto:${siteConfig.links.email}`}
-              className="font-semibold text-fg hover:text-primary-600 dark:hover:text-primary-300 transition-colors"
-            >
-              {siteConfig.links.email}
-            </a>
+          <div className="text-sm leading-relaxed">
+            <div className="font-bold text-fg mb-1">이 문의는 심쌤만 볼 수 있어요</div>
+            <p className="text-muted-fg">
+              남겨주신 글은 다른 방문자에게는 <b>절대 보이지 않습니다.</b>{' '}
+              이름·학교·이메일은 모두 <b>선택</b>이에요. 편하게, 익명으로 남기셔도 괜찮아요.
+            </p>
           </div>
         </motion.div>
 
@@ -122,7 +169,7 @@ export default function ContactPage() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
+          transition={{ delay: 0.15 }}
         >
           <div className="glass rounded-3xl p-8 md:p-10">
             <div className="flex items-center gap-2 mb-6 text-fg">
@@ -141,27 +188,17 @@ export default function ContactPage() {
                 aria-hidden="true"
                 className="hidden"
               />
-              <div className="grid md:grid-cols-2 gap-6">
-                <Input
-                  label="이름"
-                  name="name"
-                  id="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  placeholder="성함 또는 닉네임"
-                  required
-                />
-                <Input
-                  label="이메일"
-                  name="email"
-                  id="email"
-                  type="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  placeholder="답장 받으실 주소"
-                  required
-                />
-              </div>
+
+              <Input
+                label="제목"
+                name="title"
+                id="title"
+                value={formData.title}
+                onChange={handleChange}
+                placeholder="어떤 이야기인가요?"
+                maxLength={120}
+                required
+              />
 
               <Textarea
                 label="내용"
@@ -171,8 +208,44 @@ export default function ContactPage() {
                 onChange={handleChange}
                 placeholder="하고 싶은 이야기를 자유롭게 적어주세요"
                 rows={6}
+                maxLength={5000}
                 required
               />
+
+              <div className="grid md:grid-cols-3 gap-6">
+                <Input
+                  label="이름 (선택)"
+                  name="name"
+                  id="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  placeholder="닉네임도 좋아요"
+                  maxLength={100}
+                />
+                <Input
+                  label="학교 (선택)"
+                  name="school"
+                  id="school"
+                  value={formData.school}
+                  onChange={handleChange}
+                  placeholder="안 적으셔도 돼요"
+                  maxLength={100}
+                />
+                <Input
+                  label="이메일 (선택)"
+                  name="email"
+                  id="email"
+                  type="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  placeholder="답장 받으실 주소"
+                  maxLength={200}
+                />
+              </div>
+
+              <p className="text-xs text-muted-fg -mt-2">
+                답장을 받고 싶으시면 이메일을 남겨주세요. 그 외엔 모두 비워두셔도 됩니다.
+              </p>
 
               {error && (
                 <p className="text-sm text-red-600 dark:text-red-400">{error}</p>
@@ -180,9 +253,59 @@ export default function ContactPage() {
 
               <Button type="submit" isLoading={isSubmitting} className="w-full">
                 <Send className="w-4 h-4 mr-2" />
-                보내기
+                문의 보내기
               </Button>
             </form>
+          </div>
+        </motion.div>
+
+        {/* 이 기기에서 보낸 문의 (로컬 기록) */}
+        {history.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="glass rounded-2xl p-6 mt-8"
+          >
+            <div className="flex items-center gap-2 mb-4 text-fg">
+              <Inbox className="w-4 h-4 text-primary-500 dark:text-primary-300" />
+              <h3 className="text-sm font-bold">이 기기에서 보낸 문의</h3>
+            </div>
+            <ul className="divide-y divide-line">
+              {history.map((item, i) => (
+                <li
+                  key={`${item.at}-${i}`}
+                  className="py-2.5 flex items-center justify-between gap-4 text-sm"
+                >
+                  <span className="text-fg truncate">{item.title}</span>
+                  <span className="text-muted-fg shrink-0">{formatDate(item.at)}</span>
+                </li>
+              ))}
+            </ul>
+            <p className="mt-4 text-xs text-muted-fg">
+              이 목록은 지금 쓰시는 기기에만 저장돼요. 다른 사람은 볼 수 없어요.
+            </p>
+          </motion.div>
+        )}
+
+        {/* 이메일로 직접 보내기 (대체 수단) */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.25 }}
+          className="glass rounded-2xl p-5 mt-8 flex items-center justify-center gap-4"
+        >
+          <div className="w-11 h-11 rounded-xl bg-primary-500/15 flex items-center justify-center text-primary-600 dark:text-primary-300">
+            <Mail className="w-5 h-5" />
+          </div>
+          <div className="text-center sm:text-left">
+            <div className="text-sm text-muted-fg">폼 대신 이메일로 보내셔도 돼요</div>
+            <a
+              href={`mailto:${siteConfig.links.email}`}
+              className="font-semibold text-fg hover:text-primary-600 dark:hover:text-primary-300 transition-colors"
+            >
+              {siteConfig.links.email}
+            </a>
           </div>
         </motion.div>
       </div>

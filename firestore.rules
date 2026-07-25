@@ -1,13 +1,17 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Contacts — 문의 폼: 누구나 생성 가능(필드·크기 검증), 열람은 Firebase 콘솔에서만
+    // Contacts — 비공개 문의함: 누구나 생성 가능(필드·크기 검증), 열람은 관리자(Firebase 콘솔)만
+    // name/email/school 은 선택(빈 문자열 허용), title/message 만 필수. 읽기는 항상 차단.
     match /contacts/{contactId} {
-      allow create: if request.resource.data.keys().hasOnly(['name', 'email', 'message', 'createdAt', 'status'])
-        && request.resource.data.name is string && request.resource.data.name.size() >= 1 && request.resource.data.name.size() <= 100
-        && request.resource.data.email is string && request.resource.data.email.size() >= 3 && request.resource.data.email.size() <= 200
+      allow create: if request.resource.data.keys().hasOnly(['name', 'email', 'school', 'title', 'message', 'createdAt', 'status'])
+        && request.resource.data.name is string && request.resource.data.name.size() <= 100
+        && request.resource.data.email is string && request.resource.data.email.size() <= 200
+        && request.resource.data.school is string && request.resource.data.school.size() <= 100
+        && request.resource.data.title is string && request.resource.data.title.size() >= 1 && request.resource.data.title.size() <= 120
         && request.resource.data.message is string && request.resource.data.message.size() >= 1 && request.resource.data.message.size() <= 5000
-        && request.resource.data.status == 'pending';
+        && request.resource.data.status == 'pending'
+        && request.resource.data.createdAt is timestamp;
       allow read, update, delete: if false;
     }
 
