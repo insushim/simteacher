@@ -93,7 +93,7 @@ export default function PortfolioPage() {
           </h1>
           <p className="mt-6 text-lg text-muted-fg max-w-2xl mx-auto leading-relaxed">
             학급 경제 플랫폼 <strong className="text-fg font-semibold">알찬</strong>, 아이들이 매일 쓰는
-            학습 사이트 6개, 그리고 선생님을 위한 프로그램 2개.
+            학습 사이트 7개, 그리고 선생님을 위한 프로그램 2개.
             모두 바이브코딩으로 만들어 실제 교실에서 씁니다.
           </p>
         </motion.div>

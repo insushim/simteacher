@@ -89,8 +89,8 @@ export const learningSites: LearningSite[] = [
     url: 'https://arton.simssijjang.workers.dev/coloring',
   },
   {
-    slug: 'narae',
-    name: '나래',
+    slug: 'papersky',
+    name: '종이하늘',
     subject: '논리 퍼즐',
     tagline: '종이비행기를 날려 보드를 비우는 원터치 퍼즐',
     description:
@@ -103,8 +103,8 @@ export const learningSites: LearningSite[] = [
     ],
     target: '전 연령',
     tech: ['TypeScript', 'Canvas 2D', 'Vite'],
-    image: '/images/portfolio/narae.webp',
-    url: 'https://narae-2lg.pages.dev/',
+    image: '/images/portfolio/papersky.webp',
+    url: 'https://papersky.pages.dev/',
   },
   {
     slug: 'vocaworm',
@@ -157,6 +157,24 @@ export const learningSites: LearningSite[] = [
     target: '초등 1~6학년',
     tech: ['Next.js', 'React', 'Firebase'],
     image: '/images/portfolio/seulgisem.webp',
+  },
+  {
+    slug: 'mathcastle',
+    name: '수학 성 수호자',
+    subject: '수학',
+    tagline: '문제를 맞혀 마법을 쏘는 수학 타워 디펜스',
+    description:
+      '학년·학기를 고르면 그 학기 교육과정 안에서만 문제가 나옵니다. 마법사를 움직여 타워를 세우고 밀려오는 몬스터를 막는데, 틀리면 한 줄 풀이 힌트가 뜨고 그 문제는 맞힐 때까지 3·7·15웨이브 뒤에 다시 나옵니다.',
+    features: [
+      '3-1부터 6-2까지 8개 학기 · 문제 약 2만 문항',
+      '오답 풀이 힌트 + 간격 반복 재출제 · 오답노트',
+      '타워 23종 · 몬스터 34종 · 마법 10종',
+      '일간 · 주간 · 월간 랭킹 · 업적 19종',
+    ],
+    target: '초등 3~6학년',
+    tech: ['JavaScript', 'Canvas 2D', 'Cloudflare Pages · D1'],
+    image: '/images/portfolio/mathcastle.webp',
+    url: 'https://mathcastle.pages.dev/',
   },
   {
     slug: 'araharu',
