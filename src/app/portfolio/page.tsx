@@ -282,11 +282,11 @@ export default function PortfolioPage() {
               Learning Sites
             </span>
             <h2 className="mt-3 text-3xl md:text-4xl font-extrabold tracking-tight text-fg">
-              아이들이 쓰는 <span className="gradient-text">학습 사이트</span>
+              알찬 속 <span className="gradient-text">학습 사이트</span>
             </h2>
             <p className="mt-4 text-lg text-muted-fg max-w-2xl mx-auto leading-relaxed">
               수학·영어·미술·논리까지, 교실에서 필요할 때마다 하나씩 만들었습니다.
-              대부분 알찬 메뉴에서 바로 들어가 쓰고, 몇 개는 링크로 열어 두었습니다.
+              아이들이 알찬 메뉴에서 바로 들어가 씁니다.
             </p>
           </div>
 
