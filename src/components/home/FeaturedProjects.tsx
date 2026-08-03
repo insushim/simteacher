@@ -46,7 +46,7 @@ export function FeaturedProjects() {
           <p className="mt-4 text-lg text-muted-fg max-w-2xl mx-auto">
             교실 속 살아있는 경제 교육 플랫폼. 실제 학급에서 운영 중입니다.
             <br className="hidden sm:block" />
-            수학·영어·미술 학습 사이트 7개도 함께 만들어 붙였습니다.
+            수학·영어·미술 학습 사이트 8개도 함께 만들어 붙였습니다.
           </p>
         </motion.div>
 

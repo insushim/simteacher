@@ -177,6 +177,24 @@ export const learningSites: LearningSite[] = [
     url: 'https://mathcastle.pages.dev/',
   },
   {
+    slug: 'gugu',
+    name: '구구성 수호대',
+    subject: '수학 연산',
+    tagline: '계산이 빨라질수록 내 군대가 강해진다',
+    description:
+      '숫자가 살아 있는 셈나라를 지키는 라인 디펜스입니다. 문제를 맞히면 셈력이 차오르고, 그 힘으로 셈지기를 불러내 전선을 밀어냅니다. 곱셈구구를 가운데 두고 1학년 한 자리 덧셈부터 3학년 나눗셈까지 다룹니다.',
+    features: [
+      '스테이지 무한 · 셈지기 24종 · 엉킴괴수 12종',
+      '숫자패드로 직접 입력 — 찍기로는 뚫리지 않게',
+      '틀린 문제는 엉킴 봉인으로 남아 다음 판에 다시',
+      '로그인 없이 바로 · 기록은 기기에만 (주간 순위는 선택)',
+    ],
+    target: '초등 2~4학년',
+    tech: ['TypeScript', 'Canvas 2D', 'Cloudflare Workers'],
+    image: '/images/portfolio/gugu.webp',
+    url: 'https://iw-lab.github.io/gugu-guardians/',
+  },
+  {
     slug: 'araharu',
     name: '아라하루',
     subject: '아침 학습',
