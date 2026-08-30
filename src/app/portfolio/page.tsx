@@ -93,7 +93,7 @@ export default function PortfolioPage() {
           </h1>
           <p className="mt-6 text-lg text-muted-fg max-w-2xl mx-auto leading-relaxed">
             학급 경제 플랫폼 <strong className="text-fg font-semibold">알찬</strong>, 아이들이 매일 쓰는
-            학습 사이트 8개, 그리고 선생님을 위한 프로그램 2개.
+            학습 사이트 {learningSites.length}개, 그리고 선생님을 위한 프로그램 {teacherTools.length}개.
             모두 바이브코딩으로 만들어 실제 교실에서 씁니다.
           </p>
         </motion.div>
@@ -285,8 +285,8 @@ export default function PortfolioPage() {
               알찬 속 <span className="gradient-text">학습 사이트</span>
             </h2>
             <p className="mt-4 text-lg text-muted-fg max-w-2xl mx-auto leading-relaxed">
-              수학·영어·미술·논리까지, 교실에서 필요할 때마다 하나씩 만들었습니다.
-              아이들이 알찬 메뉴에서 바로 들어가 씁니다.
+              수학·영어·미술·타자·논리 퍼즐·방탈출까지, 교실에서 필요할 때마다 하나씩
+              만들었습니다. 아이들이 알찬 메뉴에서 바로 들어가 씁니다.
             </p>
           </div>
 
@@ -294,11 +294,12 @@ export default function PortfolioPage() {
             {learningSites.map((site, i) => (
               <motion.article
                 key={site.slug}
+                id={site.slug}
                 initial={{ opacity: 0, y: 24 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: '-60px' }}
                 transition={{ delay: (i % 2) * 0.08 }}
-                className="glass rounded-3xl overflow-hidden flex flex-col"
+                className="glass rounded-3xl overflow-hidden flex flex-col scroll-mt-28"
               >
                 {/* 스크린샷 */}
                 <div className="relative aspect-[8/5] bg-muted overflow-hidden border-b border-line">

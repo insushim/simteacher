@@ -323,4 +323,24 @@ export const learningSites: LearningSite[] = [
     image: '/images/portfolio/kongkong.webp',
     url: 'https://kongkong-volley.pages.dev/',
   },
+  {
+    slug: 'reloadarena',
+    name: '리로드 아레나 Reload Arena',
+    subject: '교과 대항전',
+    category: '국어·통합',
+    tagline: '물감은 시간으로도 돈으로도 안 나온다 — 문제를 맞혀야 충전된다',
+    description:
+      '물감 통 모양 드론이 되어 교실을 물감으로 칠하는 대항전입니다. 다른 게임과 달리 탄약이 시간으로 차지 않습니다. 영어·수학·과학·사회 문제를 맞혀야만 물감이 나오므로, 조준이 서툰 아이도 문제를 풀어 팀에 기여할 수 있습니다.',
+    features: [
+      '문항 은행 1만 1천여 개 — 영어 3,322 · 과학 3,586 · 사회 4,435 · 수학은 학년별 생성',
+      '학년·학기를 고르면 그 범위에서만 출제 (3~6학년)',
+      '놀이 방식 3종 — 정지전 · 바닥 칠하기 · 칠하기+정지',
+      '팀전 2:2 · 4:4 · 6:6, 개인전 4~6명 · 방 코드로 함께',
+      '이름 직접 입력 · 계정 없음 · 채팅 없음 · 기록은 기기에만',
+    ],
+    target: '초등 3~6학년',
+    tech: ['Three.js', 'Cloudflare Workers', 'Durable Objects'],
+    image: '/images/portfolio/reloadarena.webp',
+    url: 'https://reload-arena.simssijjang-d79.workers.dev/',
+  },
 ];
