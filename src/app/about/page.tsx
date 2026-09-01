@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { Heart, Code2, Users } from 'lucide-react'
 
@@ -49,8 +50,15 @@ export default function AboutPage() {
           transition={{ delay: 0.1 }}
           className="grid md:grid-cols-2 gap-12 items-center mb-24"
         >
-          <div className="aspect-square rounded-3xl glass flex items-center justify-center text-9xl">
-            👨‍🏫
+          <div className="relative aspect-square rounded-3xl glass overflow-hidden">
+            <Image
+              src="/images/simsem-avatar-b.webp"
+              alt="선행 심선생 웹툰 캐릭터"
+              fill
+              sizes="(max-width: 768px) 100vw, 50vw"
+              className="object-cover"
+              priority
+            />
           </div>
           <div>
             <h2 className="text-2xl font-bold text-fg mb-6">

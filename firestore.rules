@@ -15,6 +15,67 @@ service cloud.firestore {
       allow read, update, delete: if false;
     }
 
+    // Guestbook — 공개 방명록: 누구나 읽고, 익명 로그인한 브라우저면 누구나 쓴다.
+    // 삭제는 "쓴 그 브라우저"만 가능하다 — uid 는 클라이언트가 위조할 수 없다(request.auth).
+    // 수정은 막는다: 착한 글로 통과시킨 뒤 내용을 바꿔치기하는 경로를 아예 없앤다.
+    match /guestbook/{entryId} {
+      allow read: if true;
+      allow create: if request.auth != null
+        && request.resource.data.keys().hasOnly(['nickname', 'message', 'color', 'uid', 'createdAt'])
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.nickname is string
+        && request.resource.data.nickname.size() >= 1 && request.resource.data.nickname.size() <= 20
+        && request.resource.data.message is string
+        && request.resource.data.message.size() >= 1 && request.resource.data.message.size() <= 500
+        && request.resource.data.color in ['yellow', 'mint', 'sky', 'pink', 'lilac']
+        && request.resource.data.createdAt == request.time;
+      allow delete: if request.auth != null && resource.data.uid == request.auth.uid;
+      allow update: if false;
+    }
+
+    // Stats — 방문자 수. 문서는 'total' 과 'd_YYYYMMDD' 둘뿐이고, 값은 +1 씩만 움직인다.
+    // increment(1) 의 결과값을 규칙이 그대로 보므로 "한 번에 1만" 을 강제할 수 있다.
+    match /stats/{statId} {
+      allow read: if true;
+      allow create: if (statId == 'total' || statId.matches('^d_[0-9]{8}$'))
+        && request.resource.data.keys().hasOnly(['count'])
+        && request.resource.data.count == 1;
+      allow update: if (statId == 'total' || statId.matches('^d_[0-9]{8}$'))
+        && request.resource.data.keys().hasOnly(['count'])
+        && request.resource.data.count == resource.data.count + 1;
+      allow delete: if false;
+    }
+
+    // Clicks — 어떤 카드가 눌렸는지. 전체 누적과 날짜별을 따로 쌓는다.
+    match /clicks/{slug} {
+      allow read: if true;
+      allow create: if request.resource.data.keys().hasOnly(['slug', 'name', 'count'])
+        && request.resource.data.slug == slug && slug.size() <= 60
+        && request.resource.data.name is string && request.resource.data.name.size() <= 60
+        && request.resource.data.count == 1;
+      allow update: if request.resource.data.keys().hasOnly(['slug', 'name', 'count'])
+        && request.resource.data.slug == resource.data.slug
+        && request.resource.data.name is string && request.resource.data.name.size() <= 60
+        && request.resource.data.count == resource.data.count + 1;
+      allow delete: if false;
+    }
+
+    match /clicksDaily/{dailyId} {
+      allow read: if true;
+      allow create: if request.resource.data.keys().hasOnly(['date', 'slug', 'name', 'count'])
+        && request.resource.data.date is string && request.resource.data.date.matches('^[0-9]{8}$')
+        && dailyId == request.resource.data.date + '__' + request.resource.data.slug
+        && request.resource.data.slug is string && request.resource.data.slug.size() <= 60
+        && request.resource.data.name is string && request.resource.data.name.size() <= 60
+        && request.resource.data.count == 1;
+      allow update: if request.resource.data.keys().hasOnly(['date', 'slug', 'name', 'count'])
+        && request.resource.data.date == resource.data.date
+        && request.resource.data.slug == resource.data.slug
+        && request.resource.data.name is string && request.resource.data.name.size() <= 60
+        && request.resource.data.count == resource.data.count + 1;
+      allow delete: if false;
+    }
+
     // 그 외 전부 차단
     match /{document=**} {
       allow read, write: if false;

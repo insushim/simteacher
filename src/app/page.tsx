@@ -1,3 +1,4 @@
+import { PopularStrip } from '@/components/community/PopularStrip'
 import { IntroPanel } from '@/components/home/IntroPanel'
 import { Catalog } from '@/components/home/Catalog'
 import { CTASection } from '@/components/home/CTASection'
@@ -11,6 +12,7 @@ export default function Home() {
       </div>
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <PopularStrip />
         <IntroPanel />
         <Catalog />
       </div>

@@ -2,12 +2,13 @@
 
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
-import { Mail, Send, CheckCircle, MessageCircle, Lock, Inbox } from 'lucide-react'
+import { Mail, Send, CheckCircle, MessageCircle, Lock, Inbox, ChevronDown } from 'lucide-react'
 import { Input } from '@/components/ui/Input'
 import { Textarea } from '@/components/ui/Textarea'
 import { Button } from '@/components/ui/Button'
 import { siteConfig } from '@/data/siteConfig'
 import { submitContactForm } from '@/lib/firestore'
+import { Guestbook } from '@/components/community/Guestbook'
 
 // 이 기기에서 보낸 문의 기록 (로컬 전용 — 서버로 안 나가고, 다른 사람에겐 안 보임)
 const HISTORY_KEY = 'simteacher:inquiries'
@@ -39,6 +40,7 @@ function formatDate(ts: number): string {
 }
 
 export default function ContactPage() {
+  const [formOpen, setFormOpen] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [submittedWithEmail, setSubmittedWithEmail] = useState(false)
@@ -138,15 +140,15 @@ export default function ContactPage() {
         >
           <span className="text-primary-600 dark:text-primary-300 font-semibold">Contact</span>
           <h1 className="mt-4 text-4xl md:text-5xl font-extrabold tracking-tight text-fg">
-            편하게 <span className="gradient-text">문의</span> 남겨주세요
+            편하게 <span className="gradient-text">한 마디</span> 남겨주세요
           </h1>
           <p className="mt-6 text-lg text-muted-fg max-w-xl mx-auto leading-relaxed">
             에듀테크, 바이브코딩, 학급 운영 이야기 — 무엇이든 좋습니다.
-            인사만 남겨주셔도 반가워요.
+            로그인 없이 익명으로 붙이는 쪽지판이에요. 인사만 남겨주셔도 반가워요.
           </p>
         </motion.div>
 
-        {/* 비공개 안심 배너 */}
+        {/* 공개 쪽지판 안내 */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -154,15 +156,25 @@ export default function ContactPage() {
           className="glass rounded-2xl p-5 mb-8 flex items-start gap-4 border border-primary-500/20"
         >
           <div className="w-11 h-11 shrink-0 rounded-xl bg-primary-500/15 flex items-center justify-center text-primary-600 dark:text-primary-300">
-            <Lock className="w-5 h-5" />
+            <MessageCircle className="w-5 h-5" />
           </div>
           <div className="text-sm leading-relaxed">
-            <div className="font-bold text-fg mb-1">이 문의는 심쌤만 볼 수 있어요</div>
+            <div className="font-bold text-fg mb-1">여기 남긴 쪽지는 모두에게 보여요</div>
             <p className="text-muted-fg">
-              남겨주신 글은 다른 방문자에게는 <b>절대 보이지 않습니다.</b>{' '}
-              이름·학교·이메일은 모두 <b>선택</b>이에요. 편하게, 익명으로 남기셔도 괜찮아요.
+              가입도 로그인도 없습니다. 닉네임은 <b>선택</b>이고, 비워두면 &lsquo;익명의 선생님&rsquo;으로
+              올라가요. 조용히 물어볼 이야기라면 아래 <b>비공개 문의</b>를 쓰시면 심쌤만 봅니다.
             </p>
           </div>
+        </motion.div>
+
+        {/* 공개 방명록 */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="mb-14"
+        >
+          <Guestbook />
         </motion.div>
 
         {/* Contact Form */}
@@ -171,11 +183,28 @@ export default function ContactPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.15 }}
         >
-          <div className="glass rounded-3xl p-8 md:p-10">
-            <div className="flex items-center gap-2 mb-6 text-fg">
-              <MessageCircle className="w-5 h-5 text-primary-500 dark:text-primary-300" />
-              <h2 className="text-lg font-bold">문의 남기기</h2>
-            </div>
+          <div className="glass rounded-3xl overflow-hidden">
+            <button
+              type="button"
+              onClick={() => setFormOpen((v) => !v)}
+              aria-expanded={formOpen}
+              className="w-full flex items-center gap-3 p-6 md:px-10 text-left hover:bg-muted/40 transition-colors"
+            >
+              <Lock className="w-5 h-5 text-primary-500 dark:text-primary-300 shrink-0" />
+              <span className="min-w-0">
+                <span className="block text-lg font-bold text-fg">비공개로 문의하기</span>
+                <span className="block text-sm text-muted-fg mt-0.5">
+                  심쌤만 볼 수 있어요. 다른 방문자에게는 보이지 않습니다.
+                </span>
+              </span>
+              <ChevronDown
+                className={`ml-auto w-5 h-5 text-muted-fg shrink-0 transition-transform ${
+                  formOpen ? 'rotate-180' : ''
+                }`}
+              />
+            </button>
+
+            <div className={formOpen ? 'block p-6 pt-0 md:px-10 md:pb-10' : 'hidden'}>
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* 허니팟 — 봇 스팸 방지용 숨김 필드 (사람은 보지도, 채우지도 않음) */}
               <input
@@ -256,6 +285,7 @@ export default function ContactPage() {
                 문의 보내기
               </Button>
             </form>
+            </div>
           </div>
         </motion.div>
 

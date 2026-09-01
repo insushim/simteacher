@@ -17,8 +17,12 @@ export interface LearningSite {
   target: string;
   tech: string[];
   image: string;
-  /** 공개 링크. 비공개(운영 중이라 링크 미공개)면 undefined */
+  /** 공개 링크. 링크를 걸지 않는 사이트면 undefined */
   url?: string;
+  /** url 이 없을 때 카드에 대신 보일 사유. 없으면 '학급 운영 중'.
+   *  ⚠️ 사유는 사이트마다 다르다 — 기본 문구를 그대로 두면 사실과 다른 말이 나간다
+   *  (2026-08-31 아라하루: 링크를 뺀 이유는 학급 운영이 아니라 «회원가입 필요»였다). */
+  urlNote?: string;
 }
 
 export interface TeacherTool {
@@ -76,6 +80,25 @@ export const teacherTools: TeacherTool[] = [
 ];
 
 export const learningSites: LearningSite[] = [
+  {
+    slug: 'beaton',
+    name: '비트:온 BEAT:ON',
+    subject: '음악',
+    category: '미술·놀이',
+    tagline: '떨어지는 노트를 박자 맞춰 두드리는 리듬 게임',
+    description:
+      '가사·채보·프로그램을 직접 만들고 음원까지 AI 작곡 도구로 직접 생성한 리듬 게임입니다. 남의 곡을 쓰지 않아 교실에서 마음 놓고 틀 수 있고, 민요·트로트부터 K-POP·국악 퓨전까지 장르를 넓게 담았습니다. 채보는 곡을 분석해 자동 생성한 뒤 «한 손 3연타»·«같은 레인 연타» 같은 물리적으로 못 치는 배치를 게이트로 걸러냅니다.',
+    features: [
+      '직접 만든 60여 곡 · 민요부터 K-POP까지',
+      '4키 · 6키 · 6키+스크래치 3개 모드',
+      '이지 · 노멀 · 하드 난이도별 채보',
+      '키 배치 변경 · 롱노트 릴리즈 판정',
+    ],
+    target: '초등 전 학년',
+    tech: ['ACE-Step 음원 생성', 'librosa 비트 분석', 'Canvas 2D', 'Cloudflare Pages'],
+    image: '/images/portfolio/beaton.webp',
+    url: 'https://beaton-evo.pages.dev',
+  },
   {
     slug: 'arton',
     name: '아트온 ArtON',
@@ -226,7 +249,9 @@ export const learningSites: LearningSite[] = [
     target: '초등 1~6학년',
     tech: ['Next.js', 'Cloudflare Pages', 'D1'],
     image: '/images/portfolio/araharu.webp',
-    url: 'https://araharu-ecp.pages.dev/',
+    // 2026-08-31 사용자 지시로 링크를 뺐다 — 쓰려면 회원가입이 필요해서
+    // 홈페이지에서 바로 눌러 들어가는 흐름과 맞지 않는다. 알찬 쪽 링크는 그대로 둔다.
+    urlNote: '회원가입 후 이용',
   },
   {
     slug: 'numeroquest',
@@ -265,6 +290,83 @@ export const learningSites: LearningSite[] = [
     tech: ['Next.js', 'Cloudflare Pages Functions', 'D1'],
     image: '/images/portfolio/typingverse.webp',
     url: 'https://typingverse.pages.dev',
+  },
+  {
+    slug: 'iwpick',
+    name: '뽑기ON',
+    subject: '교실 추첨',
+    category: '미술·놀이',
+    tagline: '이름만 넣으면 끝나는 교실 랜덤 추첨',
+    description:
+      '설치도 로그인도 없이 이름만 붙여 넣으면 추첨이 시작됩니다. 응모권을 여러 장 낸 사람이 그만큼 유리한 가중치 추첨을 지원하고, 끝에서만 긴장되던 기존 추첨과 달리 관문 세 개로 긴장을 나눠 놓았습니다.',
+    features: [
+      '구슬 레이스 — 관문 3개(좁은 문 · 회전 지옥 · 최후의 문), 70명 기준 약 2분',
+      '서바이벌 — 라운드마다 탈락, 최후의 1인까지 약 30초',
+      '가중치 추첨 — 이름 뒤에 *3을 붙이면 응모권 3장',
+      '3명이 남으면 자동 슬로우모션 · 화면 확대 · 심장박동',
+      '구슬이 끼면 자동으로 풀려나 레이스가 반드시 끝남',
+    ],
+    target: '학급 전체',
+    tech: ['Vite'],
+    image: '/images/portfolio/iwpick.webp',
+    url: 'https://iwpick.pages.dev/',
+  },
+  {
+    slug: 'numrush',
+    name: '넘버러시 NumRush',
+    subject: '수 감각',
+    category: '수학',
+    tagline: '60초 안에 1부터 순서대로 몇 번까지',
+    description:
+      '전자칠판 앞에서 4~6명이 한 기기를 교대하며 푸는 60초 게임입니다. 1부터 순서대로 숫자를 찾고, 그 결과가 오늘의 발표 순서와 팀이 됩니다. 의존성과 빌드 도구 없이 만들어 초기 로드가 82.5KB입니다.',
+    features: [
+      '60초 시간 고정 — 4~6명 교대가 수업 시간 안에 끝남',
+      '초기 로드 82.5KB · 웹폰트 0KB — 교실 AP 한 대에 40명이 붙어도 열림',
+      '터치 타겟 88px 이상 · 수치 96px 이상 — 서서 조작, 뒷자리에서도 읽힘',
+      '이름 입력 없음 — 60초 세션에 한글 IME 를 넣지 않음',
+    ],
+    target: '초등 3~6학년',
+    tech: ['Vanilla JS'],
+    image: '/images/portfolio/numrush.webp',
+    url: 'https://numrush.vercel.app',
+  },
+  {
+    slug: 'spanland',
+    name: '한뼘 땅따먹기 SpanLand',
+    subject: '측정·넓이',
+    category: '수학',
+    tagline: '돌을 세 번 튕겨 집으로 돌아오면 그 안이 내 땅',
+    description:
+      '전래놀이 땅따먹기를 전자칠판용으로 각색했습니다. 방향과 세기를 정해 돌을 튕기고, 3타 안에 내 땅으로 돌아오면 궤적이 그린 다각형이 내 땅이 됩니다. 멀리 갈수록 큰 땅이지만 못 돌아올 위험도 커지는 긴장 하나로 게임이 성립해 아이템도 상점도 없습니다.',
+    features: [
+      '탭 2회로 방향과 세기 — 전자칠판 적외선 터치는 드래그 중 끊기므로 드래그 0',
+      '2타 복귀는 삼각형(안전), 3타 복귀는 사각형(큰 소득)',
+      '60초 뒤 차지한 칸 수가 점수 · 1~6인 핫시트',
+      '의존성 0 · 빌드 도구 0 · 웹폰트 0KB',
+    ],
+    target: '초등 3~6학년',
+    tech: ['Vanilla JS'],
+    image: '/images/portfolio/spanland.webp',
+    url: 'https://spanland.vercel.app',
+  },
+  {
+    slug: 'yutdash',
+    name: '한달음 윷놀이 YutDash',
+    subject: '확률·자료',
+    category: '수학',
+    tagline: '번갈아 윷을 던져 말을 집으로, 남의 말은 잡고',
+    description:
+      '전래놀이 윷놀이를 전자칠판용 턴제 대결로 각색했습니다. 누르는 것이 말이 아니라 목적지라 「말 고르고 → 길 고르기」의 두 단계가 없고, 잡을 수 있는 자리는 붉은 가시 링으로 미리 보입니다. 누가 목표에 닿아도 그 바퀴는 마쳐 전원이 같은 횟수의 차례를 받습니다.',
+    features: [
+      '목적지를 누르는 조작 — 지름길과 바깥길이 그냥 다른 목적지',
+      '남의 말을 잡으면 한 번 더, 윷·모도 한 번 더',
+      '개(2칸)가 6/16 로 가장 자주 나오는 실제 윷 확률 그대로',
+      '목표 점수 도달 후에도 그 바퀴는 마침 — 차례 수가 같아야 공정',
+    ],
+    target: '초등 3~6학년',
+    tech: ['Vanilla JS'],
+    image: '/images/portfolio/yutdash.webp',
+    url: 'https://yutdash.vercel.app',
   },
   {
     slug: 'chromafall',
@@ -342,5 +444,46 @@ export const learningSites: LearningSite[] = [
     tech: ['Three.js', 'Cloudflare Workers', 'Durable Objects'],
     image: '/images/portfolio/reloadarena.webp',
     url: 'https://reload-arena.simssijjang-d79.workers.dev/',
+  },
+  {
+    slug: 'skyguard',
+    name: '하늘수비대 SkyGuard',
+    subject: '교과 통합',
+    category: '국어·통합',
+    tagline: '위에서 쏟아지는 것을, 아래에서 막는다',
+    description:
+      '적이 위에서 아래로 내려오고 아이는 화면 아래에 탑을 세워 막는 웨이브 디펜스입니다. 웨이브 사이의 관제 문제와 전투 중 지식탄으로 국어·수학·과학·사회 문항이 섞이는데, 틀려도 잃는 것이 없고 연속으로 맞힐수록 보상이 커집니다.',
+    features: [
+      '캠페인 20웨이브 + 클리어 후 열리는 무한모드, 난이도 보통·어려움·악몽',
+      '탑 6종(화살·폭탄·서리·송곳·방벽·발전소)과 특화 갈래 — 한 종류만 쌓으면 막히도록 설계',
+      '문항 122개 — 국어 31 · 사회 31 · 수학 30 · 과학 30, 3~6학년',
+      '오답 페널티 없음 · 연속 정답이 보상을 키움 · 학습이 플레이 시간의 약 8.5%',
+      '보스 4종(5·10·15·20웨이브)은 약점 퀴즈를 맞히면 약해짐',
+      '계정 없음 · 기록은 그 브라우저에만 저장 · 개인정보 수집 없음',
+    ],
+    target: '초등 3~6학년',
+    tech: ['Phaser 3', 'TypeScript', 'Vite'],
+    image: '/images/portfolio/skyguard.webp',
+    url: 'https://skyguard-bdk.pages.dev/',
+  },
+  {
+    slug: 'pilhan',
+    name: '필한 筆漢',
+    subject: '한자 급수',
+    category: '국어·통합',
+    tagline: '눈으로 보는 한자가 아니라, 손으로 쓰는 한자',
+    description:
+      '한국어문회 8급~3급 배정한자 1,817자를 급수 순서대로 손으로 쓰며 익히는 앱입니다. 화면에 획순 번호가 뜨고, 마우스·손가락·펜 어느 것으로 그어도 획의 순서와 방향을 그 자리에서 채점합니다. 반대로 그으면 통과되지 않습니다.',
+    features: [
+      '한 글자를 3획 → 다른 글자 → 3획 → 4획으로 나눠 쓰는 분산 반복',
+      '획순 채점 1,805자 · 나머지 12자는 자형이 다를 위험이 있어 따라쓰기로',
+      '간격 반복(SM-2) 복습 — 확인 문항은 학습 직후가 아니라 다음 세션에',
+      '칭호 童蒙→書聖 10단계 · 도장첩 20개 · 하루 목표',
+      '설치 없이 브라우저에서 · 오프라인에서도 · 기록은 기기에만',
+    ],
+    target: '초등 3학년 이상 · 한자 급수 준비',
+    tech: ['TypeScript', 'React', 'PWA(오프라인)', 'IndexedDB'],
+    image: '/images/portfolio/pilhan.webp',
+    url: 'https://pilhan.pages.dev/',
   },
 ];

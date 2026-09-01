@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { ArrowRight, Download, ExternalLink, Lock } from 'lucide-react'
 import { Badge } from '@/components/ui/Badge'
+import { recordClick } from '@/lib/community'
 import {
   learningSites,
   teacherTools,
@@ -73,16 +74,31 @@ export function Catalog() {
         </div>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {sites.map((site, i) => (
-            <motion.a
+          {sites.map((site, i) => {
+            // 🔴 링크가 없는 사이트가 생겼다(2026-08-31 아라하루). 예전엔 전부 url 이 있어서
+            //    `<motion.a href={site.url}>` 로 고정이었는데, url 이 undefined 면
+            //    **href 없는 <a>** 가 된다 — 링크처럼 보이는데 눌러도 아무 일도 안 일어난다.
+            //    그래서 링크가 없으면 아예 <div> 로 렌더한다(클릭 집계도 안 한다).
+            const linked = Boolean(site.url)
+            const Card = linked ? motion.a : motion.div
+            const linkProps = linked
+              ? {
+                  href: site.url,
+                  target: '_blank',
+                  rel: 'noopener noreferrer',
+                  onClick: () => recordClick(site.slug, site.name),
+                }
+              : {}
+            return (
+            <Card
               key={site.slug}
-              href={site.url}
-              target="_blank"
-              rel="noopener noreferrer"
+              {...linkProps}
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: Math.min(i, 8) * 0.04 }}
-              className="group glass rounded-3xl overflow-hidden flex flex-col hover:border-primary-500/60 hover:-translate-y-1 transition-all duration-200"
+              className={`group glass rounded-3xl overflow-hidden flex flex-col transition-all duration-200 ${
+                linked ? 'hover:border-primary-500/60 hover:-translate-y-1' : ''
+              }`}
             >
               <div className="relative aspect-[8/5] bg-muted overflow-hidden border-b border-line">
                 <Image
@@ -105,13 +121,21 @@ export function Catalog() {
                   {site.tagline}
                 </p>
 
-                <span className="mt-auto pt-5 inline-flex items-center text-sm font-semibold text-primary-600 dark:text-primary-300">
-                  사이트 열기
-                  <ExternalLink className="ml-1.5 w-4 h-4" />
-                </span>
+                {linked ? (
+                  <span className="mt-auto pt-5 inline-flex items-center text-sm font-semibold text-primary-600 dark:text-primary-300">
+                    사이트 열기
+                    <ExternalLink className="ml-1.5 w-4 h-4" />
+                  </span>
+                ) : (
+                  <span className="mt-auto pt-5 inline-flex items-center text-sm text-muted-fg">
+                    <Lock className="mr-1.5 w-3.5 h-3.5" />
+                    {site.urlNote ?? '학급 운영 중'}
+                  </span>
+                )}
               </div>
-            </motion.a>
-          ))}
+            </Card>
+            )
+          })}
         </div>
 
         <div className="mt-8 text-center">
@@ -147,6 +171,7 @@ export function Catalog() {
               href={tool.url}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => recordClick(tool.slug, tool.name)}
               className="group glass rounded-3xl overflow-hidden flex flex-col hover:border-primary-500/60 hover:-translate-y-1 transition-all duration-200"
             >
               <div className="relative aspect-[8/5] bg-muted overflow-hidden border-b border-line">

@@ -366,7 +366,7 @@ export default function PortfolioPage() {
                     ) : (
                       <span className="inline-flex items-center text-sm text-muted-fg">
                         <Lock className="mr-1.5 w-3.5 h-3.5" />
-                        학급 운영 중
+                        {site.urlNote ?? '학급 운영 중'}
                       </span>
                     )}
                   </div>
