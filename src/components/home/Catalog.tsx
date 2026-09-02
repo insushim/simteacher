@@ -165,13 +165,12 @@ export function Catalog() {
         </div>
 
         <div className="grid sm:grid-cols-2 gap-6">
+          {/* 카드 전체를 <a> 로 감싸지 않는다 — 설치본과 웹판이 둘 다 있는 도구
+              (우리 반 투표함)에서 링크를 중첩할 수 없어 웹판으로 들어갈 길이
+              막혔다(2026-09-02). 이제 링크는 카드 아래에 나란히 둔다. */}
           {teacherTools.map((tool) => (
-            <a
+            <div
               key={tool.slug}
-              href={tool.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={() => recordClick(tool.slug, tool.name)}
               className="group glass rounded-3xl overflow-hidden flex flex-col hover:border-primary-500/60 hover:-translate-y-1 transition-all duration-200"
             >
               <div className="relative aspect-[8/5] bg-muted overflow-hidden border-b border-line">
@@ -195,12 +194,33 @@ export function Catalog() {
                   {tool.tagline}
                 </p>
 
-                <span className="mt-auto pt-5 inline-flex items-center text-sm font-semibold text-primary-600 dark:text-primary-300">
-                  <Download className="mr-1.5 w-4 h-4" />
-                  {tool.urlLabel}
-                </span>
+                <div className="mt-auto pt-5 flex items-center gap-4 flex-wrap">
+                  <a
+                    href={tool.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => recordClick(tool.slug, tool.name)}
+                    className="inline-flex items-center text-sm font-semibold text-primary-600 dark:text-primary-300 hover:underline"
+                  >
+                    <Download className="mr-1.5 w-4 h-4" />
+                    {tool.urlLabel}
+                  </a>
+
+                  {tool.altUrl && (
+                    <a
+                      href={tool.altUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={() => recordClick(tool.slug, tool.name)}
+                      className="inline-flex items-center text-sm font-semibold text-muted-fg hover:text-fg hover:underline"
+                    >
+                      {tool.altLabel}
+                      <ExternalLink className="ml-1.5 w-4 h-4" />
+                    </a>
+                  )}
+                </div>
               </div>
-            </a>
+            </div>
           ))}
         </div>
       </section>
