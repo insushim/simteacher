@@ -77,6 +77,25 @@ export const teacherTools: TeacherTool[] = [
     url: 'https://ddobak.simssijjang-d79.workers.dev',
     urlLabel: '안드로이드 앱 내려받기',
   },
+  {
+    slug: 'classvotebox',
+    name: '우리 반 투표함',
+    platform: '웹 (설치 없음)',
+    tagline: '한 기기를 돌려가며, 비밀은 지켜지는 투표',
+    description:
+      '교실에서 후보를 정하고 한 기기를 돌려가며 찍는 비밀 투표·개표 도구입니다. 한 사람이 찍고 나면 화면이 바로 다음 투표자용으로 넘어가 앞사람의 선택이 다시 보이지 않고, 개표는 선생님이 정해둔 PIN 4자리를 넣어야 시작됩니다.',
+    features: [
+      '후보 투표(1인 1표 · 1인 2표)와 찬반 투표(찬성 · 반대 · 기권)',
+      '후보 2~20명 · 학급 투표 최대 60명 / 전교 투표 최대 3,000명',
+      '숫자키로 바로 투표, 0은 기권 — 줄 서서 찍어도 빠르게',
+      '개표 속도 3단(한 표씩 · 빠르게 · 초고속), 득표율은 유효표 기준',
+      '설치 · 로그인 없음 · 기록은 그 기기에만 저장 · 학생 정보 수집 없음',
+    ],
+    tech: ['React', 'Vite'],
+    image: '/images/portfolio/classvotebox.webp',
+    url: 'https://class-vote-box.pages.dev/',
+    urlLabel: '투표함 열기',
+  },
 ];
 
 export const learningSites: LearningSite[] = [
@@ -485,25 +504,5 @@ export const learningSites: LearningSite[] = [
     tech: ['TypeScript', 'React', 'PWA(오프라인)', 'IndexedDB'],
     image: '/images/portfolio/pilhan.webp',
     url: 'https://pilhan.pages.dev/',
-  },
-  {
-    slug: 'classvotebox',
-    name: '우리 반 투표함',
-    subject: '교실 투표',
-    category: '미술·놀이',
-    tagline: '한 기기를 돌려가며, 비밀은 지켜지는 투표',
-    description:
-      '교실에서 후보를 정하고 한 기기를 돌려가며 찍는 비밀 투표·개표 도구입니다. 한 사람이 찍고 나면 화면이 바로 다음 투표자용으로 넘어가 앞사람의 선택이 다시 보이지 않고, 개표는 선생님이 정해둔 PIN 4자리를 넣어야 시작됩니다.',
-    features: [
-      '후보 투표(1인 1표 · 1인 2표)와 찬반 투표(찬성 · 반대 · 기권)',
-      '후보 2~20명 · 학급 투표 최대 60명 / 전교 투표 최대 3,000명',
-      '숫자키로 바로 투표, 0은 기권 — 줄 서서 찍어도 빠르게',
-      '개표 속도 3단(한 표씩 · 빠르게 · 초고속), 득표율은 유효표 기준',
-      '설치 · 로그인 없음 · 기록은 그 기기에만 저장 · 학생 정보 수집 없음',
-    ],
-    target: '학급 전체 · 전교 단위 투표',
-    tech: ['React', 'Vite'],
-    image: '/images/portfolio/classvotebox.webp',
-    url: 'https://class-vote-box.pages.dev/',
   },
 ];
