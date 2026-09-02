@@ -252,17 +252,31 @@ export default function PortfolioPage() {
                       ))}
                     </div>
 
-                    {tool.url && (
-                      <a
-                        href={tool.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center text-sm font-semibold text-primary-600 dark:text-primary-300 hover:underline"
-                      >
-                        <Download className="mr-1.5 w-4 h-4" />
-                        {tool.urlLabel}
-                      </a>
-                    )}
+                    <div className="flex items-center gap-4 flex-wrap">
+                      {tool.url && (
+                        <a
+                          href={tool.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center text-sm font-semibold text-primary-600 dark:text-primary-300 hover:underline"
+                        >
+                          <Download className="mr-1.5 w-4 h-4" />
+                          {tool.urlLabel}
+                        </a>
+                      )}
+                      {/* 설치본과 웹판이 둘 다 있는 도구(우리 반 투표함)에서만 뜬다. */}
+                      {tool.altUrl && (
+                        <a
+                          href={tool.altUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center text-sm font-semibold text-muted-fg hover:text-fg hover:underline"
+                        >
+                          {tool.altLabel}
+                          <ExternalLink className="ml-1.5 w-4 h-4" />
+                        </a>
+                      )}
+                    </div>
                   </div>
                 </div>
               </motion.article>

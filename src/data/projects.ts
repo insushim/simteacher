@@ -37,6 +37,10 @@ export interface TeacherTool {
   /** 다운로드/실행 링크 */
   url?: string;
   urlLabel?: string;
+  /** 보조 링크(설치본과 웹판이 둘 다 있는 도구). 홈 카드는 카드 전체가 링크라
+   *  중첩 <a> 를 못 넣는다 — 포트폴리오 상세 카드에서만 함께 보인다. */
+  altUrl?: string;
+  altLabel?: string;
 }
 
 // 선생님을 위한 프로그램
@@ -80,7 +84,7 @@ export const teacherTools: TeacherTool[] = [
   {
     slug: 'classvotebox',
     name: '우리 반 투표함',
-    platform: '웹 (설치 없음)',
+    platform: 'Windows 데스크톱 · 웹',
     tagline: '한 기기를 돌려가며, 비밀은 지켜지는 투표',
     description:
       '교실에서 후보를 정하고 한 기기를 돌려가며 찍는 비밀 투표·개표 도구입니다. 한 사람이 찍고 나면 화면이 바로 다음 투표자용으로 넘어가 앞사람의 선택이 다시 보이지 않고, 개표는 선생님이 정해둔 PIN 4자리를 넣어야 시작됩니다.',
@@ -89,12 +93,15 @@ export const teacherTools: TeacherTool[] = [
       '후보 2~20명 · 학급 투표 최대 60명 / 전교 투표 최대 3,000명',
       '숫자키로 바로 투표, 0은 기권 — 줄 서서 찍어도 빠르게',
       '개표 속도 3단(한 표씩 · 빠르게 · 초고속), 득표율은 유효표 기준',
-      '설치 · 로그인 없음 · 기록은 그 기기에만 저장 · 학생 정보 수집 없음',
+      'Windows 단일 실행 파일(설치 불필요) · 브라우저로도 바로 사용',
+      '로그인 없음 · 기록은 그 기기에만 저장 · 학생 정보 수집 없음',
     ],
     tech: ['React', 'Vite'],
     image: '/images/portfolio/classvotebox.webp',
-    url: 'https://class-vote-box.pages.dev/',
-    urlLabel: '투표함 열기',
+    url: 'https://github.com/iw-lab/class-vote-box/releases/latest/download/default.zip',
+    urlLabel: 'Windows용 내려받기',
+    altUrl: 'https://class-vote-box.pages.dev/',
+    altLabel: '웹에서 바로 열기',
   },
 ];
 
