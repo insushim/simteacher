@@ -98,7 +98,7 @@ export const teacherTools: TeacherTool[] = [
     ],
     tech: ['React', 'Vite'],
     image: '/images/portfolio/classvotebox.webp',
-    url: 'https://github.com/iw-lab/class-vote-box/releases/latest/download/default.zip',
+    url: 'https://github.com/iw-lab/class-vote-box/releases/latest/download/ClassVoteBox-win64.zip',
     urlLabel: 'Windows용 내려받기',
     altUrl: 'https://class-vote-box.pages.dev/',
     altLabel: '웹에서 바로 열기',
