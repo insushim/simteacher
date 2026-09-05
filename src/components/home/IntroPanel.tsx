@@ -57,7 +57,7 @@ export function IntroPanel() {
             <div className="mt-8 glass rounded-3xl p-8 md:p-10">
               <span className="inline-flex items-center px-4 py-2 rounded-full border border-primary-500/40 bg-primary-500/10 text-primary-700 dark:text-primary-300 text-sm font-semibold">
                 <Sparkles className="w-4 h-4 mr-2" />
-                초등교사 14년 × 바이브코딩 1년차
+                전북 초등교사 14년 × 바이브코딩 1년차
               </span>
 
               <h2 className="mt-6 text-2xl md:text-3xl font-extrabold tracking-tight text-fg">
@@ -66,9 +66,9 @@ export function IntroPanel() {
               </h2>
 
               <p className="mt-4 text-muted-fg leading-relaxed max-w-2xl">
-                현직 초등교사가 AI와 함께 학급 경제 SaaS를 만들었습니다. 개발
-                지식이 아니라 교실의 필요에서 출발합니다. 먼저 배워서 나누고,
-                선한 영향력을 전합니다.
+                전북에서 근무하는 현직 초등교사가 AI와 함께 학급 경제 SaaS를
+                만들었습니다. 개발 지식이 아니라 교실의 필요에서 출발합니다.
+                먼저 배워서 나누고, 선한 영향력을 전합니다.
               </p>
 
               {/* 사실만 — 수치 변경 시 근거 확인 */}
