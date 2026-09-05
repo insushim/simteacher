@@ -472,6 +472,27 @@ export const learningSites: LearningSite[] = [
     url: 'https://reload-arena.simssijjang-d79.workers.dev/',
   },
   {
+    slug: 'oreudap',
+    name: '오르답 Oreudap',
+    subject: '구구단 · 영단어',
+    category: '수학',
+    tagline: '정답을 밟아야 한 층 오른다',
+    description:
+      '문제를 보고 정답이 적힌 발판을 밟아 위로 오르는 즉답 아케이드입니다. 발판은 캐릭터가 아니라 «세계»가 내려가며 쌓이고, 층이 오를수록 제한시간이 줄고 문항 등급이 열리며 배경음악이 조여듭니다. 틀린 낱말은 오답노트에 담겨 며칠 뒤 다시 나옵니다.',
+    features: [
+      '모드 3가지 — 무한 오르기(하트 3) · 아슬아슬(기력이 계속 줄어든다) · 60초 질주',
+      '구구단 72문항 + 영단어 1,207개(3·4학년 617 · 5·6학년 590), 두 방향으로 출제',
+      '영어 낱말 943개는 원어민 발음 파일로 읽어 주고, 나머지는 브라우저 음성이 읽는다',
+      '10·25층에서 문항 등급이 열리고 BGM 이 함께 바뀜 — 어려워지는 것을 귀로 먼저 안다',
+      '일일 등수는 과목·모드별로 따로 — 이름은 기기에서 가려서 보낸다(김철수 → 김*수)',
+      '계정 없음 · 나이·학교 안 받음 · 기록은 그 브라우저에만 저장',
+    ],
+    target: '초등 2~6학년',
+    tech: ['Phaser 3', 'Vite', 'Cloudflare Workers'],
+    image: '/images/portfolio/oreudap.webp',
+    url: 'https://muhan-pi.vercel.app',
+  },
+  {
     slug: 'skyguard',
     name: '하늘수비대 SkyGuard',
     subject: '교과 통합',
