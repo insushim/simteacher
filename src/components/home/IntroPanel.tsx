@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ArrowRight, ChevronDown, Sparkles } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
+import { profile } from '@/data/siteConfig'
 
 /**
  * 첫 화면의 자기소개는 **접어 둔다.**
@@ -57,11 +58,11 @@ export function IntroPanel() {
             <div className="mt-8 glass rounded-3xl p-8 md:p-10">
               <span className="inline-flex items-center px-4 py-2 rounded-full border border-primary-500/40 bg-primary-500/10 text-primary-700 dark:text-primary-300 text-sm font-semibold">
                 <Sparkles className="w-4 h-4 mr-2" />
-                전북 초등교사 14년 × 바이브코딩 1년차
+                전북 초등교사 {profile.teachingYears}년 × 바이브코딩 {profile.vibeCodingYears}
               </span>
 
               <h2 className="mt-6 text-2xl md:text-3xl font-extrabold tracking-tight text-fg">
-                교실에서 14년,{' '}
+                교실에서 {profile.teachingYears}년,{' '}
                 <span className="gradient-text">코드로 만드는 새로운 교육</span>
               </h2>
 
@@ -74,8 +75,8 @@ export function IntroPanel() {
               {/* 사실만 — 수치 변경 시 근거 확인 */}
               <div className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-4">
                 {[
-                  { value: '14년', label: '교직 경력', sub: '2013년 9월부터' },
-                  { value: '1년차', label: '바이브코딩', sub: '2025년부터' },
+                  { value: `${profile.teachingYears}년`, label: '교직 경력', sub: `${profile.teachingSince}부터` },
+                  { value: profile.vibeCodingYears, label: '바이브코딩', sub: `${profile.vibeCodingSince}년부터` },
                   { value: '알찬', label: '학급 경제 SaaS', sub: '실제 학급 운영 중' },
                 ].map((stat) => (
                   <div

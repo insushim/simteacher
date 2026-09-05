@@ -22,8 +22,8 @@ export function CTASection() {
             함께 이야기 나눠요
           </h2>
           <p className="mt-4 text-lg text-muted-fg max-w-xl mx-auto leading-relaxed">
-            에듀테크, 바이브코딩, 학급 운영 — 무엇이든 편하게 문의해 주세요.
-            인사만 남겨주셔도 반갑습니다.
+            에듀테크, 바이브코딩, 학급 운영 — 무엇이든 편하게 물어보세요.
+            로그인 없이 익명으로 남기는 쪽지판입니다.
           </p>
           <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
             <Button href="/contact" size="lg">

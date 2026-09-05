@@ -17,7 +17,9 @@ export const profile = {
   teachingSince: '2013년 9월', // 교직 시작
   teachingYears: 14, // 교직 경력 (년차)
   vibeCodingSince: 2025, // 바이브코딩 시작 연도
-  vibeCodingYears: '1년차',
+  // 🔴 이 값은 «해가 바뀌면 틀려진다». 2026-09-05 에 1년차로 남아 있던 것을 사용자가 잡았다.
+  //    화면 세 곳에 하드코딩돼 있던 걸 여기 하나로 모았으니, 고칠 때는 여기만 고친다.
+  vibeCodingYears: '2년차',
 };
 
 export const navigation: NavItem[] = [
