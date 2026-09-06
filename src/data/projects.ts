@@ -533,4 +533,25 @@ export const learningSites: LearningSite[] = [
     image: '/images/portfolio/pilhan.webp',
     url: 'https://pilhan.pages.dev/',
   },
+  {
+    slug: 'looppark',
+    name: '루프 파크 Loop Park',
+    subject: '학년별 수학',
+    category: '수학',
+    tagline: '문제를 풀어야 놀이공원이 커진다',
+    description:
+      '길을 깔고 놀이기구를 놓아 손님을 모으는 3D 경영 시뮬레이션입니다. 새 시설은 «연구»로 열리는데, 연구 포인트는 연구소에 쌓인 문제를 풀어야 나옵니다. 시작할 때 대상 학년과 학기를 고르면 그 학기 교과 범위 안에서만 출제됩니다.',
+    features: [
+      '학년·학기 선택(3-1~6-2) — 교과서 단원 36개에 맞춘 문항, 학기마다 300회를 뽑아 서로 다른 문항 152~279개',
+      '롤러코스터를 직접 그린다 — 조각을 이어 붙이면 짜릿·아찔·울렁과 G 안전 판정이 즉시 갱신되고, 추천 코스 4종으로 한 번에 완성할 수도 있다',
+      '요금을 올리면 이용객이 줄고, 줄이 길면 손님이 화를 낸다 — 수치가 그대로 게임이 된다',
+      '청소부·정비공·엔터테이너가 각자 실제로 일한다(쓰레기·고장·대기 불만)',
+      '12달 한 판 · 동/은/금메달 · KST 기준 일일 랭킹(이름은 가운데 글자를 가려 저장)',
+      '계정 없음 · 개인정보 수집 없음 · 기록은 그 브라우저에만 저장',
+    ],
+    target: '초등 3~6학년',
+    tech: ['Three.js', 'JavaScript', 'Cloudflare Pages/KV'],
+    image: '/images/portfolio/looppark.webp',
+    url: 'https://loop-park.pages.dev/',
+  },
 ];
