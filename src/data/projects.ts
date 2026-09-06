@@ -490,7 +490,7 @@ export const learningSites: LearningSite[] = [
     target: '초등 2~6학년',
     tech: ['Phaser 3', 'Vite', 'Cloudflare Workers'],
     image: '/images/portfolio/oreudap.webp',
-    url: 'https://muhan-pi.vercel.app',
+    url: 'https://oreudap.vercel.app',
   },
   {
     slug: 'skyguard',
