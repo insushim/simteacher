@@ -8,6 +8,7 @@ import rehypeHighlight from 'rehype-highlight'
 import 'highlight.js/styles/github-dark.css'
 import { getAllPosts, getPostBySlug } from '@/lib/blog'
 import { Badge } from '@/components/ui/Badge'
+import { Comments } from '@/components/blog/Comments'
 
 export async function generateStaticParams() {
   const posts = getAllPosts()
@@ -105,6 +106,8 @@ export default async function BlogPostPage({
             {post.content ?? ''}
           </ReactMarkdown>
         </div>
+
+        <Comments slug={slug} />
       </article>
     </div>
   )

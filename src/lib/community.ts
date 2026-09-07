@@ -17,6 +17,7 @@ import {
   serverTimestamp,
   setDoc,
   Timestamp,
+  writeBatch,
   where,
   type Unsubscribe,
 } from 'firebase/firestore'
@@ -234,4 +235,153 @@ export async function fetchPopular(
     query(collection(db, 'clicks'), orderBy('count', 'desc'), limit(n))
   )
   return { scope: 'all', items: toItems(allSnap.docs) }
+}
+
+// ── 글별 댓글 ───────────────────────────────────────────────────────────────
+// 방명록과 같은 계약에서 출발하되, 교차검증에서 잡힌 세 가지를 고쳤다.
+//
+// ① **댓글 문서에 uid 를 두지 않는다.** 두면 「익명」으로 쓴 글과 이름을 적은 글이 같은 uid 로
+//    묶여 누구나 대조만으로 익명 작성자를 특정할 수 있다. 소유권은 commentOwners 에 따로 두고
+//    그 문서는 본인만 읽는다. 삭제 권한은 규칙이 그 문서를 열어 검사한다.
+// ② **최신순으로 읽고 화면에서 뒤집는다.** 오래된 순 + limit 이면 댓글이 상한을 넘는 순간
+//    새 댓글이 영원히 화면에 안 나온다(구독 결과가 옛 200개에 고정된다).
+// ③ localStorage 는 읽기도 막힐 수 있다(사파리 프라이빗 등). 읽기·쓰기 전부 감싼다.
+//
+// ⚠️ 남은 한계: 30초 쿨다운은 **이 브라우저의 편의**일 뿐 서버 강제가 아니다. SDK 를 직접 부르면
+//    우회된다. Firestore 규칙만으로는 이걸 못 막는다(규칙은 같은 배치 안의 다른 쓰기를 못 본다).
+//    진짜 방어는 Firebase App Check 이고, 그건 콘솔 설정이 필요하다.
+
+export interface Comment {
+  id: string
+  slug: string
+  nickname: string
+  message: string
+  createdAt: number | null
+}
+
+export const COMMENT_MAX = 1000
+export const COMMENT_NICK_MAX = 20
+export const COMMENT_PAGE = 200
+
+const C_COOLDOWN_MS = 30_000
+const C_COOLDOWN_KEY = 'simteacher:comments:lastPost'
+const C_MINE_KEY = 'simteacher:comments:mine'
+
+function readLS(key: string): string | null {
+  try {
+    return window.localStorage.getItem(key)
+  } catch {
+    return null // 저장소가 아예 막힌 브라우저 — 없는 것으로 다룬다
+  }
+}
+function writeLS(key: string, value: string) {
+  try {
+    window.localStorage.setItem(key, value)
+  } catch {
+    /* 무시 */
+  }
+}
+
+export function commentCooldownLeftMs(): number {
+  if (typeof window === 'undefined') return 0
+  const last = Number(readLS(C_COOLDOWN_KEY) ?? 0)
+  return Math.max(0, C_COOLDOWN_MS - (Date.now() - last))
+}
+
+/** 내가 쓴 댓글 id — 삭제 버튼을 «보여줄지» 정하는 데만 쓴다. 실제 권한은 규칙이 판단한다. */
+export function myCommentIds(): string[] {
+  if (typeof window === 'undefined') return []
+  try {
+    const raw = readLS(C_MINE_KEY)
+    const arr = raw ? (JSON.parse(raw) as unknown) : []
+    return Array.isArray(arr) ? arr.filter((v): v is string => typeof v === 'string') : []
+  } catch {
+    return []
+  }
+}
+function rememberMine(id: string) {
+  const next = [...myCommentIds(), id].slice(-300)
+  writeLS(C_MINE_KEY, JSON.stringify(next))
+}
+function forgetMine(id: string) {
+  writeLS(C_MINE_KEY, JSON.stringify(myCommentIds().filter((v) => v !== id)))
+}
+
+/**
+ * 최신순으로 구독하고, 화면에 줄 때 시간순으로 뒤집는다.
+ * 오래된 순 + limit 으로 구독하면 댓글이 상한을 넘는 순간 새 댓글이 결과에서 빠진다.
+ */
+export function subscribeComments(
+  slug: string,
+  onData: (rows: Comment[]) => void,
+  onError: (e: unknown) => void,
+  max = COMMENT_PAGE
+): Unsubscribe {
+  const q = query(
+    collection(getDb(), 'comments'),
+    where('slug', '==', slug),
+    orderBy('createdAt', 'desc'),
+    limit(max)
+  )
+  return onSnapshot(
+    q,
+    (snap) => {
+      const rows = snap.docs.map((d) => {
+        const v = d.data()
+        const ts = v.createdAt
+        return {
+          id: d.id,
+          slug: String(v.slug ?? ''),
+          nickname: String(v.nickname ?? ''),
+          message: String(v.message ?? ''),
+          createdAt: ts instanceof Timestamp ? ts.toMillis() : null,
+        }
+      })
+      onData(rows.reverse()) // 화면은 위에서 아래로 시간순
+    },
+    onError
+  )
+}
+
+export async function postComment(input: {
+  slug: string
+  nickname: string
+  message: string
+}): Promise<string> {
+  const nickname = input.nickname.trim().slice(0, COMMENT_NICK_MAX)
+  const message = input.message.trim().slice(0, COMMENT_MAX)
+  if (!message) throw new Error('내용을 적어주세요.')
+  // 규칙이 보는 것과 같은 형식을 여기서도 본다. 여기서 걸러야 사용자가
+  // 「권한 없음」이라는 알 수 없는 오류 대신 뜻이 통하는 말을 본다.
+  if (!/^[a-z0-9-]{1,100}$/.test(input.slug)) throw new Error('잘못된 글 주소입니다.')
+  if (commentCooldownLeftMs() > 0) throw new Error('조금 전에 남기셨어요. 30초 뒤에 다시 시도해주세요.')
+
+  const uid = await ensureUid()
+  const db = getDb()
+  // 문서 id 를 먼저 정해야 소유권 문서를 같은 id 로 만들 수 있다.
+  const ref = doc(collection(db, 'comments'))
+  const batch = writeBatch(db)
+  batch.set(ref, {
+    slug: input.slug,
+    nickname, // 빈 문자열 그대로 — 화면에서 「익명」으로 그린다
+    message,
+    createdAt: serverTimestamp(),
+  })
+  batch.set(doc(db, 'commentOwners', ref.id), { uid })
+  await batch.commit()
+
+  rememberMine(ref.id)
+  writeLS(C_COOLDOWN_KEY, String(Date.now()))
+  return ref.id
+}
+
+/** 본인 댓글만 지워진다 — 규칙이 commentOwners 를 열어 uid 를 검사한다. */
+export async function deleteComment(id: string): Promise<void> {
+  await ensureUid()
+  const db = getDb()
+  const batch = writeBatch(db)
+  batch.delete(doc(db, 'comments', id))
+  batch.delete(doc(db, 'commentOwners', id))
+  await batch.commit()
+  forgetMine(id)
 }

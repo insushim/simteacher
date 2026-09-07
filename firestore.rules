@@ -33,6 +33,50 @@ service cloud.firestore {
       allow update: if false;
     }
 
+    // Comments — 글별 공개 댓글. 방명록과 같은 계약(익명 uid · 수정 금지 · 본인만 삭제)에서 출발하되,
+    // 교차검증에서 잡힌 두 가지를 더 막았다.
+    //
+    // 🔴 **uid 를 댓글 문서에 두지 않는다.** 두면 「익명」으로 쓴 댓글과 실명으로 쓴 댓글이
+    //    같은 uid 로 묶여, 누구나 대조만으로 익명 작성자를 특정할 수 있다. 아이들이 쓰는
+    //    사이트에서 이건 그냥 익명이 아닌 것이다. 소유권은 아래 commentOwners 에 따로 두고,
+    //    그 문서는 «본인만» 읽을 수 있다.
+    // 🔴 **list 에 상한을 건다.** read 를 통째로 열면 클라이언트의 limit 은 아무 의미가 없고
+    //    컬렉션 전체를 반복 스캔당할 수 있다(읽기 비용).
+    // 🔴 공백만 있는 글·이름을 막는다. 클라이언트의 trim 은 SDK 직접 호출로 우회된다.
+    match /comments/{commentId} {
+      allow get: if true;
+      allow list: if request.query.limit <= 200;
+      allow create: if request.auth != null
+        && request.resource.data.keys().hasOnly(['slug', 'nickname', 'message', 'createdAt'])
+        && request.resource.data.slug is string
+        && request.resource.data.slug.size() >= 1 && request.resource.data.slug.size() <= 100
+        && request.resource.data.slug.matches('^[a-z0-9-]+$')
+        && request.resource.data.nickname is string
+        && request.resource.data.nickname.size() <= 20
+        && (request.resource.data.nickname == '' || request.resource.data.nickname.matches('.*\\S.*'))
+        && request.resource.data.message is string
+        && request.resource.data.message.size() >= 1 && request.resource.data.message.size() <= 1000
+        && request.resource.data.message.matches('.*\\S.*')
+        && request.resource.data.createdAt == request.time;
+      // 소유권 문서를 열어 본인인지 확인한다. 소유권 문서가 없으면(옛 데이터·유실) 지울 수 없고,
+      // 그때는 관리자가 Firebase 콘솔에서 지운다.
+      allow delete: if request.auth != null
+        && exists(/databases/$(database)/documents/commentOwners/$(commentId))
+        && get(/databases/$(database)/documents/commentOwners/$(commentId)).data.uid == request.auth.uid;
+      allow update: if false;
+    }
+
+    // 댓글 소유권 — 「이 댓글은 누구 것인가」만 담는다. **본인만 읽는다.**
+    // 공개 댓글에서 uid 를 떼어 내 익명성을 지키면서도 삭제 권한은 서버가 검사할 수 있게 하는 자리.
+    match /commentOwners/{commentId} {
+      allow read: if request.auth != null && resource.data.uid == request.auth.uid;
+      allow create: if request.auth != null
+        && request.resource.data.keys().hasOnly(['uid'])
+        && request.resource.data.uid == request.auth.uid;
+      allow update: if false;
+      allow delete: if request.auth != null && resource.data.uid == request.auth.uid;
+    }
+
     // Stats — 방문자 수. 문서는 'total' 과 'd_YYYYMMDD' 둘뿐이고, 값은 +1 씩만 움직인다.
     // increment(1) 의 결과값을 규칙이 그대로 보므로 "한 번에 1만" 을 강제할 수 있다.
     match /stats/{statId} {
