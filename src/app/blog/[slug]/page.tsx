@@ -91,6 +91,16 @@ export default async function BlogPostPage({
           <ReactMarkdown
             remarkPlugins={[remarkGfm]}
             rehypePlugins={[rehypeSlug, rehypeHighlight]}
+            components={{
+              // remark-gfm 은 각주 제목을 영어 "Footnotes" 로 **하드코딩**한다.
+              // 한국어 글에 영어 제목이 박히므로 그 h2 하나만 갈아 끼운다.
+              h2: ({ node, children, ...props }) =>
+                (props as { id?: string }).id === 'footnote-label' ? (
+                  <h2 {...props}>출처</h2>
+                ) : (
+                  <h2 {...props}>{children}</h2>
+                ),
+            }}
           >
             {post.content ?? ''}
           </ReactMarkdown>
