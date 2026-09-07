@@ -107,6 +107,26 @@ export const teacherTools: TeacherTool[] = [
 
 export const learningSites: LearningSite[] = [
   {
+    slug: 'koreahis',
+    name: '한국사 문제은행',
+    subject: '한국사',
+    category: '국어·통합',
+    tagline: '외우지 말고 근거로 푸는 한국사 문항 5,446개',
+    description:
+      '국사편찬위원회 «우리역사넷» 한국사 연대기를 분석해 만든 오리지널 문항 은행입니다. 원문의 사실 명제를 문항으로 조립하고, 해설에는 그 출처를 그대로 답니다. 틀린 선지에는 «왜 틀렸는지» 대신 «그건 누구의 사실인지»를 붙여, 답을 외우지 않아도 다음 문항에서 쓸 수 있는 지식이 남게 했습니다.',
+    features: [
+      '문항 5,446개 · 사실 판별 · 인물 · 순서 배열 · 시기 판별 · 유물 사진',
+      '심화 4,621 · 기본 825 · 시대 7구분으로 범위 지정',
+      '모의고사 · 오답노트 간격 반복 복습 · 시대별 정답률 통계',
+      '모든 문항이 AI 두 계열 교차검증을 거침',
+      '가입도 서버도 없음 — 학습 이력은 그 브라우저에만',
+    ],
+    target: '한국사능력검정시험 준비생 · 초등 고학년 이상',
+    tech: ['Python 문항 생성 파이프라인', '결정론 검수 게이트', 'Vanilla JS PWA', 'Vercel'],
+    image: '/images/portfolio/koreahis.webp',
+    url: 'https://koreahis.vercel.app/',
+  },
+  {
     slug: 'beaton',
     name: '비트:온 BEAT:ON',
     subject: '음악',
