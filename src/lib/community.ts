@@ -353,6 +353,10 @@ export async function postComment(input: {
   if (!message) throw new Error('내용을 적어주세요.')
   // 규칙이 보는 것과 같은 형식을 여기서도 본다. 여기서 걸러야 사용자가
   // 「권한 없음」이라는 알 수 없는 오류 대신 뜻이 통하는 말을 본다.
+  // 형식만 본다. 「실제로 있는 글인가」는 검사하지 않는다 — 규칙도 글 목록을 모르므로
+  // SDK 를 직접 부르면 없는 slug 로도 문서를 만들 수 있다. 다만 읽기는 언제나
+  // where(slug == 실제 글) 이라 그런 문서는 아무 화면에도 안 나오고 저장 공간만 쓴다.
+  // 이것도 도배와 같은 뿌리(서버 강제 부재)이고, 처방도 같다: App Check.
   if (!/^[a-z0-9-]{1,100}$/.test(input.slug)) throw new Error('잘못된 글 주소입니다.')
   if (commentCooldownLeftMs() > 0) throw new Error('조금 전에 남기셨어요. 30초 뒤에 다시 시도해주세요.')
 

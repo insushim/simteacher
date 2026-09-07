@@ -102,8 +102,16 @@ export function Comments({ slug }: { slug: string }) {
     try {
       await deleteComment(id)
       setMine(myCommentIds())
-    } catch {
-      setPostError('삭제하지 못했어요. 본인이 쓴 댓글만 지울 수 있어요.')
+    } catch (e) {
+      // 오프라인·네트워크 실패까지 「본인 것만 지울 수 있다」로 뭉뚱그리면 사용자가
+      // 자기 댓글을 못 지운다고 오해한다. 권한 거절일 때만 그렇게 말한다.
+      const denied =
+        typeof e === 'object' && e !== null && (e as { code?: string }).code === 'permission-denied'
+      setPostError(
+        denied
+          ? '본인이 쓴 댓글만 지울 수 있어요.'
+          : '삭제하지 못했어요. 잠시 뒤 다시 시도해주세요.'
+      )
     }
   }, [])
 
