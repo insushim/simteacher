@@ -1,12 +1,12 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { ArrowLeft, Calendar, Clock } from 'lucide-react'
+import { ArrowLeft, ArrowRight, Calendar, Clock } from 'lucide-react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import rehypeSlug from 'rehype-slug'
 import rehypeHighlight from 'rehype-highlight'
 import 'highlight.js/styles/github-dark.css'
-import { getAllPosts, getPostBySlug } from '@/lib/blog'
+import { getAllPosts, getPostBySlug, getAdjacentPosts } from '@/lib/blog'
 import { Badge } from '@/components/ui/Badge'
 import { Comments } from '@/components/blog/Comments'
 
@@ -37,6 +37,7 @@ export default async function BlogPostPage({
 }) {
   const { slug } = await params
   const post = getPostBySlug(slug)
+  const { prev, next } = getAdjacentPosts(slug)
   if (!post) {
     // placeholder(글 0개 빌드용) 포함, 없는 글은 목록으로 안내
     if (slug === '_placeholder') {
@@ -106,6 +107,38 @@ export default async function BlogPostPage({
             {post.content ?? ''}
           </ReactMarkdown>
         </div>
+
+        {/* 연재라서 다음 편으로 바로 갈 수 있어야 한다. 목록을 거쳐 가면 읽던 흐름이 끊긴다. */}
+        {(prev || next) && (
+          <nav className="mt-14 grid gap-3 sm:grid-cols-2">
+            {prev ? (
+              <Link
+                href={`/blog/${prev.slug}`}
+                className="glass rounded-xl p-4 transition-all hover:-translate-y-0.5 hover:shadow-lg"
+              >
+                <span className="flex items-center text-xs text-muted-fg mb-1">
+                  <ArrowLeft className="w-3.5 h-3.5 mr-1" />
+                  이전 글
+                </span>
+                <span className="block font-semibold text-fg leading-snug">{prev.title}</span>
+              </Link>
+            ) : (
+              <span />
+            )}
+            {next && (
+              <Link
+                href={`/blog/${next.slug}`}
+                className="glass rounded-xl p-4 transition-all hover:-translate-y-0.5 hover:shadow-lg sm:text-right"
+              >
+                <span className="flex items-center sm:justify-end text-xs text-muted-fg mb-1">
+                  다음 글
+                  <ArrowRight className="w-3.5 h-3.5 ml-1" />
+                </span>
+                <span className="block font-semibold text-fg leading-snug">{next.title}</span>
+              </Link>
+            )}
+          </nav>
+        )}
 
         <Comments slug={slug} />
       </article>

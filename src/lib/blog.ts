@@ -40,3 +40,25 @@ export function getAllPosts(): BlogPost[] {
 export function getPostBySlug(slug: string): BlogPost | null {
   return getAllPosts().find((p) => p.slug === slug) ?? null;
 }
+
+/**
+ * 앞뒤 글. **연재를 읽는 순서**로 잇는다 — 날짜 오름차순, 같은 날이면 slug 오름차순.
+ *
+ * 🔴 getAllPosts() 의 정렬(최신순)을 뒤집어 쓰면 안 된다. 그건 같은 날짜일 때 slug 를
+ *    «내림차순»으로 뒤집어 버려서, 하루에 여러 편을 올린 연재의 순서가 거꾸로 된다.
+ *    실제로 1~4편을 같은 날 올렸다.
+ */
+export function getAdjacentPosts(slug: string): {
+  prev: BlogPost | null
+  next: BlogPost | null
+} {
+  const ordered = getAllPosts().sort(
+    (a, b) => a.date.localeCompare(b.date) || a.slug.localeCompare(b.slug)
+  )
+  const i = ordered.findIndex((p) => p.slug === slug)
+  if (i === -1) return { prev: null, next: null }
+  return {
+    prev: i > 0 ? ordered[i - 1] : null,
+    next: i < ordered.length - 1 ? ordered[i + 1] : null,
+  }
+}
