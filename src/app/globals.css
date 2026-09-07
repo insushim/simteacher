@@ -1,5 +1,10 @@
 @import "tailwindcss";
 
+/* 🔴 Tailwind v4 는 package.json 의 플러그인을 자동으로 읽지 않는다.
+   이 한 줄이 없으면 `prose` 클래스가 통째로 무효가 되고, preflight 리셋이
+   지운 문단·제목 여백이 복구되지 않아 블로그 본문이 전부 붙어 나온다. */
+@plugin "@tailwindcss/typography";
+
 @custom-variant dark (&:where(.dark, .dark *));
 
 /* ===== Primitives (Tailwind palette) — Aurora Dark 테마 ===== */
