@@ -9,6 +9,7 @@ import 'highlight.js/styles/github-dark.css'
 import { getAllPosts, getPostBySlug, getAdjacentPosts } from '@/lib/blog'
 import { Badge } from '@/components/ui/Badge'
 import { Comments } from '@/components/blog/Comments'
+import { ViewCount } from '@/components/blog/ViewCount'
 
 export async function generateStaticParams() {
   const posts = getAllPosts()
@@ -83,6 +84,8 @@ export default async function BlogPostPage({
                 {post.readingTime}
               </span>
             )}
+            {/* 이 화면에서만 센다. 목록에서 세면 본 적 없는 글이 세어진다. */}
+            <ViewCount slug={slug} record />
           </div>
           <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight text-fg">
             {post.title}

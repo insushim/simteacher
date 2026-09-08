@@ -389,3 +389,59 @@ export async function deleteComment(id: string): Promise<void> {
   await batch.commit()
   forgetMine(id)
 }
+
+// ── 글 조회수 ───────────────────────────────────────────────────────────────
+// 방문자 수와 같은 성격이다: **정확한 조회수가 아니라 근사치**다.
+// 같은 브라우저는 같은 글을 하루 한 번만 센다 — 새로고침할 때마다 오르면 숫자가 거짓말을 한다.
+// 저장소가 막힌 브라우저(사파리 프라이빗 등)에서는 중복을 막을 방법이 없으니 아예 세지 않는다.
+
+const VIEW_KEY_PREFIX = 'simteacher:viewed:'
+
+/**
+ * 조회 1회 기록. 실패해도 화면을 막지 않는다(숫자는 글보다 덜 중요하다).
+ * 표시는 쓰기가 «성공한 뒤에» 한다 — 먼저 표시하면 규칙 거절·오프라인으로 못 센 조회가
+ * 「이미 셌다」로 남아 그날은 영영 재시도되지 않는다(방문자 카운터에서 실제로 겪었다).
+ */
+export async function recordPostView(slug: string): Promise<void> {
+  if (!/^[a-z0-9-]{1,100}$/.test(slug)) return
+  const key = `${VIEW_KEY_PREFIX}${slug}`
+  const day = todayKey()
+  if (readLS(key) === day) return
+  // 저장소가 아예 막혀 있으면 중복 집계를 못 막으므로 세지 않는다.
+  try {
+    window.localStorage.setItem(`${key}:probe`, day)
+    window.localStorage.removeItem(`${key}:probe`)
+  } catch {
+    return
+  }
+
+  try {
+    await setDoc(
+      doc(getDb(), 'postViews', slug),
+      { slug, count: increment(1) },
+      { merge: true }
+    )
+    writeLS(key, day)
+  } catch {
+    /* 집계 실패는 조용히 무시 — 다음 방문에 다시 시도된다 */
+  }
+}
+
+/** 글 하나의 조회수. 문서가 없으면 0. */
+export async function fetchPostViews(slug: string): Promise<number> {
+  const snap = await getDoc(doc(getDb(), 'postViews', slug))
+  return Number(snap.data()?.count ?? 0)
+}
+
+/**
+ * 전체 글의 조회수를 한 번에. 목록 화면이 글 수만큼 읽기를 날리지 않게 하려고 있다.
+ * 규칙이 list 에 상한을 걸어 두었으므로 limit 은 «반드시» 붙여야 한다.
+ */
+export async function fetchAllPostViews(): Promise<Record<string, number>> {
+  const snap = await getDocs(query(collection(getDb(), 'postViews'), limit(200)))
+  const out: Record<string, number> = {}
+  snap.docs.forEach((d) => {
+    out[d.id] = Number(d.data().count ?? 0)
+  })
+  return out
+}

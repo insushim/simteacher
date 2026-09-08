@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 import { Calendar, Clock, PenLine } from 'lucide-react'
 import { getAllPosts } from '@/lib/blog'
 import { Badge } from '@/components/ui/Badge'
+import { ViewCount, ViewCountsProvider } from '@/components/blog/ViewCount'
 
 export const metadata: Metadata = {
   title: '블로그',
@@ -45,6 +46,8 @@ export default function BlogPage() {
             </p>
           </div>
         ) : (
+          // 조회수는 한 번에 받아 카드들이 나눠 쓴다 — 카드마다 읽으면 글 수만큼 읽기가 는다.
+          <ViewCountsProvider>
           <div className="space-y-6">
             {posts.map((post) => (
               <Link
@@ -64,6 +67,7 @@ export default function BlogPage() {
                       {post.readingTime}
                     </span>
                   )}
+                  <ViewCount slug={post.slug} />
                 </div>
                 <h2 className="text-xl md:text-2xl font-bold text-fg mb-2">
                   {post.title}
@@ -72,6 +76,7 @@ export default function BlogPage() {
               </Link>
             ))}
           </div>
+          </ViewCountsProvider>
         )}
       </div>
     </div>
