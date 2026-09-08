@@ -8,7 +8,7 @@ export const siteConfig: SiteConfig = {
   ogImage: '/images/og/og-default.png',
   links: {
     github: 'https://github.com/iw-lab',
-    email: '215253422+iw-lab@users.noreply.github.com',
+    email: 'simssijjang@gmail.com',
   },
 };
 
