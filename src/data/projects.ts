@@ -574,4 +574,25 @@ export const learningSites: LearningSite[] = [
     image: '/images/portfolio/looppark.webp',
     url: 'https://loop-park.pages.dev/',
   },
+  {
+    slug: 'pongdang',
+    name: '퐁당 낚시터',
+    subject: '교과 통합',
+    category: '국어·통합',
+    tagline: '찌를 기다리는 몇 초에, 문제 하나',
+    description:
+      '캐스팅하고 찌를 기다리는 그 몇 초에 «물음표 병» 하나가 떠오릅니다. 맞히면 황금미끼와 물때가 올라 더 크고 귀한 물고기가 물고, 틀려도 잃는 것은 없습니다. 문제를 풀지 않아도 낚시 게임으로 완결되도록 만들었습니다 — 학습은 결과를 «더 좋게» 하지, 못 풀었다고 벌을 주지 않습니다.',
+    features: [
+      '한 판 4분 · 캐스팅 거리 조절 → 입질 → 챔질 → 텐션 파이팅',
+      '3~6학년 5과목 2,491문항(수학 1,354 · 영단어 316 · 국어 어휘 280 · 과학 290 · 사회 251) — 시작할 때 고른 학년·학기 범위에서만 출제',
+      '오답 페널티 0 · 정답은 황금미끼와 물때로 «다음 물고기»에 바로 반영',
+      '낚시터 4곳(호수·강·바다·심해) · 어종 203종 도감',
+      '일일 랭킹 — 점수는 서버가 입력 로그를 다시 돌려 계산한다(클라이언트 점수 미신뢰)',
+      '계정 없음 · 자유 입력 이름 없음 · 랭킹 이름은 가운데 글자를 가려 저장',
+    ],
+    target: '초등 3~6학년',
+    tech: ['TypeScript', 'Three.js', 'Cloudflare Pages/Functions/KV'],
+    image: '/images/portfolio/pongdang.webp',
+    url: 'https://pongdang-fishing.pages.dev/',
+  },
 ];
