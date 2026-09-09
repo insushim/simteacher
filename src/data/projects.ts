@@ -513,6 +513,27 @@ export const learningSites: LearningSite[] = [
     url: 'https://oreudap.vercel.app',
   },
   {
+    slug: 'hopsquad',
+    name: '폴짝 원정대',
+    subject: '교과 통합',
+    category: '국어·통합',
+    tagline: '문제를 안 풀어도 깰 수 있다 — 맞히면 상만 있다',
+    description:
+      '10월드 70스테이지 점프 액션입니다. 길목의 «지혜의 돌»을 건드리면 국어·수학·영어·과학 4지선다가 뜨는데, 맞히면 이슬과 활공 씨앗을 받고 틀리거나 그냥 지나쳐도 잃는 것이 없습니다. 학습을 벌이 아니라 상으로만 걸어 두었고, 문제를 하나도 풀지 않은 봇이 70스테이지를 전부 깨는 것을 검증으로 확인합니다.',
+    features: [
+      '문항 1,913개 — 국어 499 · 수학 624 · 영어 500 · 과학 290',
+      '타이틀에서 학년·학기 출제 범위 지정 — 고른 범위에 몇 문항이 있는지 그 자리에서 보여 준다',
+      '문제를 안 풀어도 클리어 가능 · 정답 보상은 이슬과 활공 씨앗',
+      '전 스테이지 봇 클리어·불가능 점프 없음·결정론을 기계 검증 19항목으로 고정',
+      '키보드 · 터치 · 전자칠판 · 전체화면',
+      '계정 없음 · 기록은 그 브라우저에만 저장 · 개인정보 수집 없음',
+    ],
+    target: '초등 1~6학년',
+    tech: ['Phaser 3', 'JavaScript', 'Vite'],
+    image: '/images/portfolio/hopsquad.webp',
+    url: 'https://hop-squad-mu.vercel.app',
+  },
+  {
     slug: 'skyguard',
     name: '하늘수비대 SkyGuard',
     subject: '교과 통합',
